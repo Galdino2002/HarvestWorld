@@ -129,6 +129,15 @@ local function createPlot(index: number): Model
  part(model, "FarmPath", Vector3.new(10, .15, 48), center + Vector3.new(0, .58, 65), Color3.fromRGB(177, 143, 99), Enum.Material.Ground)
  part(model, "FrontStep", Vector3.new(15, .3, 5), center + Vector3.new(0, .72, 91), Color3.fromRGB(145, 112, 76), Enum.Material.WoodPlanks)
  fence(model, center, 91)
+ local gatePrompt = Instance.new("ProximityPrompt")
+ gatePrompt.Name = "VisitFarmPrompt"
+ gatePrompt.ActionText = "Visitar fazenda"
+ gatePrompt.ObjectText = "Conhecer esta fazenda"
+ gatePrompt.HoldDuration = .5
+ gatePrompt.MaxActivationDistance = 12
+ gatePrompt.RequiresLineOfSight = false
+ local gateTop = model:FindFirstChild("GateTop")
+ if gateTop and gateTop:IsA("BasePart") then gatePrompt.Parent = gateTop end
 
  -- Reserved build pads: players will later place their own coop, barn and pasture here.
  buildZone(model, "ChickenCoopBuildPad", center, Vector3.new(-53, 0, -45), Vector3.new(48, .35, 42), "Galinheiro")
@@ -151,14 +160,6 @@ local function createPlot(index: number): Model
  label.Name = "OwnerName"; label.Size = UDim2.fromScale(1, 1); label.BackgroundTransparency = 1
  label.Text = "FAZENDA DISPONÍVEL"; label.TextColor3 = Color3.fromRGB(75, 55, 35)
  label.TextStrokeTransparency = .55; label.TextScaled = true; label.Font = Enum.Font.GothamBold; label.Parent = gui
- local visitPrompt = Instance.new("ProximityPrompt")
- visitPrompt.Name = "VisitFarmPrompt"
- visitPrompt.ActionText = "Visitar fazenda"
- visitPrompt.ObjectText = "Conhecer esta fazenda"
- visitPrompt.HoldDuration = .5
- visitPrompt.MaxActivationDistance = 12
- visitPrompt.RequiresLineOfSight = false
- visitPrompt.Parent = sign
  model:SetAttribute("OwnerUserId", 0)
  model:SetAttribute("OwnerName", "Disponível")
  model:SetAttribute("AccessMode", "Friends")
