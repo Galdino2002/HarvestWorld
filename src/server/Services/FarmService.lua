@@ -123,11 +123,11 @@ local function createPlot(index: number): Model
  local column = (index - 1) % 4
  local row = math.floor((index - 1) / 4)
  local center = Vector3.new((column - 1.5) * 235, 0, 280 + row * 245)
- local ground = part(model, "Ground", Vector3.new(190, 1, 190), center, GRASS, Enum.Material.LeafyGrass)
+ local ground = part(model, "Ground", Vector3.new(190, 1, 190), center, GRASS, Enum.Material.Ground)
  model.PrimaryPart = ground
  farmhouse(model, center)
  orchardAndYard(model, center)
- part(model, "FarmPath", Vector3.new(12, .2, 132), center + Vector3.new(0, .58, 20), Color3.fromRGB(177, 143, 99), Enum.Material.Ground)
+ part(model, "FarmPath", Vector3.new(12, .2, 132), center + Vector3.new(0, .58, 20), Color3.fromRGB(177, 143, 99), Enum.Material.Cobblestone)
  part(model, "FrontStep", Vector3.new(15, .3, 5), center + Vector3.new(0, .72, 91), Color3.fromRGB(145, 112, 76), Enum.Material.WoodPlanks)
  fence(model, center, 91)
  local gatePrompt = Instance.new("ProximityPrompt")
@@ -150,6 +150,17 @@ local function createPlot(index: number): Model
   local col = (i - 1) % 3
   local bed = part(model, "GardenBed_" .. i, Vector3.new(11, .45, 11), center + Vector3.new(45 + col * 14, .72, -75 + rowSlot * 14), Color3.fromRGB(112, 75, 48), Enum.Material.Ground)
   bed:SetAttribute("PlantSlot", i)
+  local bedCenter = bed.Position
+  local trim = Color3.fromRGB(132, 91, 57)
+  part(model, "BedTrim", Vector3.new(11.8, .65, .65), bedCenter + Vector3.new(0, .25, -5.45), trim, Enum.Material.WoodPlanks)
+  part(model, "BedTrim", Vector3.new(11.8, .65, .65), bedCenter + Vector3.new(0, .25, 5.45), trim, Enum.Material.WoodPlanks)
+  part(model, "BedTrim", Vector3.new(.65, .65, 10.8), bedCenter + Vector3.new(-5.45, .25, 0), trim, Enum.Material.WoodPlanks)
+  part(model, "BedTrim", Vector3.new(.65, .65, 10.8), bedCenter + Vector3.new(5.45, .25, 0), trim, Enum.Material.WoodPlanks)
+ end
+ -- Small flower borders soften the path without filling the farm with oversized grass props.
+ for _, z in {-28, -8, 12, 32, 52, 72} do
+  makeFlower(model, center + Vector3.new(-9, .5, z), Color3.fromRGB(242, 190, 104))
+  makeFlower(model, center + Vector3.new(9, .5, z + 7), Color3.fromRGB(220, 139, 157))
  end
 
  local sign = part(model, "OwnerSign", Vector3.new(12, 4, .7), center + Vector3.new(0, 5, -84), CREAM, Enum.Material.WoodPlanks)
