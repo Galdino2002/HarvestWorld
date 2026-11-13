@@ -364,7 +364,6 @@ function WorldService.Init()
  Terrain:Clear()
  -- Roblox terrain grass blades pop in/out with camera distance and look oversized on this stylized map.
  -- Keep the ground material readable at every zoom level; foliage is authored as separate world props.
- Terrain.Decoration = false
  root = folder(workspace, "HarvestWorldMap")
  -- A 3.6 km x 3.6 km landmass. Region streaming should be enabled in Studio.
  Terrain:FillBlock(CFrame.new(0, -14, 0), Vector3.new(3600, 28, 3600), Enum.Material.LeafyGrass)
