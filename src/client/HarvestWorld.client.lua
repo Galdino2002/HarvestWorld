@@ -6,6 +6,7 @@ local player = Players.LocalPlayer
 local remotes = ReplicatedStorage:WaitForChild("Remotes")
 local plantRequest = remotes:WaitForChild("PlantRequest") :: RemoteEvent
 local harvestRequest = remotes:WaitForChild("HarvestRequest") :: RemoteEvent
+local farmAccessRequest = remotes:WaitForChild("FarmAccessRequest") :: RemoteEvent
 
 local gui = Instance.new("ScreenGui")
 gui.Name = "HarvestWorldHUD"
@@ -15,8 +16,8 @@ gui.Parent = player:WaitForChild("PlayerGui")
 
 local panel = Instance.new("Frame")
 panel.Name = "FarmPanel"
-panel.Size = UDim2.fromOffset(286, 348)
-panel.Position = UDim2.new(0, 22, 0.5, -174)
+panel.Size = UDim2.fromOffset(286, 393)
+panel.Position = UDim2.new(0, 22, 0.5, -196)
 panel.BackgroundColor3 = Color3.fromRGB(35, 57, 42)
 panel.BackgroundTransparency = 0.04
 panel.Parent = gui
@@ -94,6 +95,7 @@ slotLabel.Parent = panel
 
 local function makeButton(text: string, y: number, color: Color3, callback: () -> ())
     local button = Instance.new("TextButton")
+    if text == "Visitas: amigos" then button.Name = "FarmAccessButton" end
     button.Size = UDim2.new(1, -24, 0, 39)
     button.Position = UDim2.fromOffset(12, y)
     button.BackgroundColor3 = color
@@ -125,6 +127,17 @@ makeButton("🍅  Plantar tomate", 250, Color3.fromRGB(244, 137, 119), function(
 end)
 makeButton("Colher canteiro", 295, Color3.fromRGB(157, 211, 130), function()
     harvestRequest:FireServer(selectedSlot)
+end)
+
+local accessModes = {"Friends", "Public", "Private"}
+local accessLabels = {Friends = "Visitas: amigos", Public = "Visitas: públicas", Private = "Visitas: privadas"}
+local accessIndex = 1
+makeButton("Visitas: amigos", 340, Color3.fromRGB(180, 205, 232), function()
+    accessIndex = accessIndex % #accessModes + 1
+    local mode = accessModes[accessIndex]
+    farmAccessRequest:FireServer(mode)
+    local button = panel:FindFirstChild("FarmAccessButton")
+    if button and button:IsA("TextButton") then button.Text = accessLabels[mode] end
 end)
 
 local stats = player:WaitForChild("leaderstats", 15)
