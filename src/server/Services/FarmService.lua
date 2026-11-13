@@ -57,7 +57,7 @@ local function createPlot(index: number): Model
 
     local column = (index - 1) % 4
     local row = math.floor((index - 1) / 4)
-    local center = Vector3.new((column - 1.5) * 72, 0, (row - 1) * 72)
+    local center = Vector3.new((column - 1.5) * 150, 0, 220 + row * 145)
 
     local ground = part(model, "Ground", Vector3.new(56, 1, 56), center, GRASS, Enum.Material.Grass)
     model.PrimaryPart = ground
