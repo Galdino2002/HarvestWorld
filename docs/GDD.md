@@ -30,7 +30,7 @@ Initial planned regions:
 - **Highland Ridge:** advanced crops and weather challenges.
 - **Seasonal Grounds:** rotating event content.
 
-Plots are assigned by the server. The first prototype uses a small generated starter plot; a scalable plot registry and world layout will follow.
+Plots are individually owned and assigned by the server. Each player develops a separate property in a shared open world. Farm owners choose Private, Friends, or Public access; visiting does not grant editing rights. The world will distribute plots across regions rather than present a row of isolated plots.
 
 ## 4. Farming
 Crop lifecycle: Seed → Growing → Mature → Harvested.
@@ -72,8 +72,12 @@ Planned feature: opt-in, bounded farm raids focused on eligible harvest-ready cr
 Currencies and item values are server-authoritative. Initial prototype currency is soft currency only.
 Potential monetization: cosmetics, farm themes, emotes, convenience features with careful balance, and optional passes. Avoid pay-to-win competition advantages and deceptive purchase flows. Robux purchases must use Roblox MarketplaceService and follow Roblox policies.
 
-## 9. Social features
-Farm visits, cooperative tasks, trading (later), seasonal events, and global rankings. Trading needs confirmation UI, server escrow/state validation, and anti-scam protections before implementation.
+## 9. Social and cooperative play
+- Individual properties: every player owns and progresses their own farm.
+- Owner-controlled visits: each owner chooses Private, Friends, or Public access. Friends is the safe default. Visiting does not grant editing rights.
+- Teams: players can form teams while keeping separate farms, inventories, and progression.
+- Team competition: events aggregate server-validated contributions from member farms. Team membership never transfers farm ownership.
+- Cooperative tasks, seasonal events, and trading (later). Trading needs confirmation UI, server escrow/state validation, and anti-scam protections.
 
 ## 10. Accessibility and controls
 - PC: keyboard/mouse.
