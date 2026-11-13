@@ -44,15 +44,24 @@ local function buildCar(parent: Instance): Model
     local base = Instance.new("Part")
     base.Name = "Chassis"
     base.Size = Vector3.new(8, 1.1, 12)
-    base.Position = Vector3.new(-80, 5, 330)
+    base.Position = Vector3.new(-65, 2.1, 165)
     base.Color = Color3.fromRGB(54, 70, 57)
     base.Material = Enum.Material.Metal
     base.Anchored = false
     base.TopSurface = Enum.SurfaceType.Smooth
     base.BottomSurface = Enum.SurfaceType.Smooth
     base.Parent = model
-    base:SetNetworkOwner(nil)
     model.PrimaryPart = base
+    local parkingBay = Instance.new("Part")
+    parkingBay.Name = "VehicleParkingBay"
+    parkingBay.Size = Vector3.new(17, .3, 20)
+    parkingBay.Position = Vector3.new(-65, .15, 165)
+    parkingBay.Anchored = true
+    parkingBay.Color = Color3.fromRGB(145, 119, 83)
+    parkingBay.Material = Enum.Material.Ground
+    parkingBay.TopSurface = Enum.SurfaceType.Smooth
+    parkingBay.BottomSurface = Enum.SurfaceType.Smooth
+    parkingBay.Parent = model
     chassis = base
 
     local function add(name: string, size: Vector3, offset: Vector3, color: Color3, material: Enum.Material, shape: Enum.PartType?)
@@ -92,6 +101,7 @@ local function buildCar(parent: Instance): Model
     driverSeat.Parent = model
     weld(base, driverSeat)
     seat = driverSeat
+    base:SetNetworkOwner(nil)
 
     local prompt = Instance.new("ProximityPrompt")
     prompt.ActionText = "Dirigir"
