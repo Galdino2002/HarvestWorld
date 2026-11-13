@@ -229,11 +229,9 @@ local function mountainGarden(ridge: Folder)
         for index = 1, grove[3] do
             local angle = rng:NextNumber(0, math.pi * 2)
             local radius = math.sqrt(rng:NextNumber()) * grove[4]
-            local position = Vector3.new(
-                grove[1] + math.cos(angle) * radius,
-                0,
-                grove[2] + math.sin(angle) * radius
-            )
+            local x = grove[1] + math.cos(angle) * radius
+            local z = grove[2] + math.sin(angle) * radius
+            local position = groundPosition(x, z)
             makeMountainTree(dressing, position, rng:NextNumber(0.72, 1.12))
         end
     end
@@ -253,7 +251,7 @@ local function mountainGarden(ridge: Folder)
                 dressing,
                 "HighlandFern",
                 Vector3.new(rng:NextNumber(2.2, 3.8), rng:NextNumber(1.2, 2.1), rng:NextNumber(2.2, 3.8)),
-                Vector3.new(x, 0.9, z),
+                groundPosition(x, z) + Vector3.new(0, 0.9, 0),
                 index % 2 == 0 and COLORS.leafA or COLORS.leafB,
                 Enum.Material.Grass,
                 Enum.PartType.Ball
@@ -279,11 +277,12 @@ local function mountainGarden(ridge: Folder)
         local x = rng:NextNumber(690, 1450)
         local z = rng:NextNumber(-1080, -920)
         local size = rng:NextNumber(5, 11)
+        local base = groundPosition(x, z)
         local boulder = makePart(
             dressing,
             "RidgeFootBoulder",
             Vector3.new(size * 1.3, size, size),
-            Vector3.new(x, size * 0.38, z),
+            base + Vector3.new(0, size * 0.38, 0),
             index % 2 == 0 and COLORS.rockLight or COLORS.rock,
             Enum.Material.Rock,
             Enum.PartType.Ball
