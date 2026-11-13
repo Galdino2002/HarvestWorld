@@ -103,8 +103,21 @@ local function orchardAndYard(model: Model, center: Vector3)
   makeTree(model, center + Vector3.new(offset[1], 0, offset[2]), .85 + (i % 2) * .12)
  end
  -- A small water trough and hay bales make the yard feel used, not like an empty template.
- local trough = part(model, "WaterTrough", Vector3.new(12, 2, 4), center + Vector3.new(-24, 1, 24), Color3.fromRGB(113, 143, 151), Enum.Material.Metal)
+ local troughBase = center + Vector3.new(-24, .8, 24)
+ local trough = part(model, "WaterTrough", Vector3.new(12, 1.6, 4.5), troughBase, Color3.fromRGB(132, 91, 57), Enum.Material.WoodPlanks)
  trough.CanCollide = true
+ local water = part(model, "TroughWater", Vector3.new(9.8, .18, 2.5), troughBase + Vector3.new(0, .78, 0), Color3.fromRGB(93, 170, 190), Enum.Material.Glass)
+ water.Transparency = .18
+ water.CanCollide = false
+ for _, side in {-1, 1} do
+  part(model, "TroughRim", Vector3.new(12.4, .45, .45), troughBase + Vector3.new(0, .95, side * 2.05), Color3.fromRGB(105, 72, 47), Enum.Material.Wood)
+ end
+ for _, side in {-1, 1} do
+  part(model, "TroughEnd", Vector3.new(.45, .45, 4.5), troughBase + Vector3.new(side * 5.8, .95, 0), Color3.fromRGB(105, 72, 47), Enum.Material.Wood)
+ end
+ for _, x in {-4, 4} do
+  part(model, "TroughLeg", Vector3.new(.7, 1.2, .7), troughBase + Vector3.new(x, -.9, 0), Color3.fromRGB(105, 72, 47), Enum.Material.Wood)
+ end
  for _, offset in {Vector3.new(25, 1.5, 20), Vector3.new(31, 1.5, 24)} do
   local hay = part(model, "HayBale", Vector3.new(5, 3, 4), center + offset, Color3.fromRGB(207, 174, 91), Enum.Material.Grass)
   hay.Shape = Enum.PartType.Cylinder
