@@ -33,7 +33,7 @@ local function createPlot(index: number): Model
 end
 
 function FarmService.Init()
-    plotsFolder = workspace:FindFirstChild("PlayerFarms") as Folder
+    plotsFolder = workspace:FindFirstChild("PlayerFarms") :: Folder?
     if not plotsFolder then
         plotsFolder = Instance.new("Folder")
         plotsFolder.Name = "PlayerFarms"
