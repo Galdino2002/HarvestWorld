@@ -87,7 +87,7 @@ local function villageArt(parent: Instance)
     f.Parent = parent
 
     -- A small fountain anchors the open market square without blocking the main crossing.
-    local center = Vector3.new(0, 0, -382)
+    local center = Vector3.new(58, 0, -410)
     local basin = part(f, "VillageFountainBasin", Vector3.new(2.2, 34, 34), center + Vector3.new(0, 1.1, 0), STONE, Enum.Material.Cobblestone, Enum.PartType.Cylinder)
     basin.Orientation = Vector3.new(0, 0, 90)
     basin.CanCollide = true
@@ -184,8 +184,8 @@ local function seasonalArt(parent: Instance)
 
     -- A welcoming entrance arch gives the event lawn a strong focal point.
     for _, x in {-25, 25} do
-        part(f, "FestivalArchPost", Vector3.new(3, 18, 3), center + Vector3.new(x, 9, -175), WOOD, Enum.Material.Wood)
-        local lantern = part(f, "FestivalArchLantern", Vector3.new(2.5, 2.5, 2.5), center + Vector3.new(x, 19, -175), Color3.fromRGB(255, 220, 150), Enum.Material.Glass, Enum.PartType.Ball)
+        part(f, "FestivalArchPost", Vector3.new(3, 18, 3), center + Vector3.new(x, 9, -95), WOOD, Enum.Material.Wood)
+        local lantern = part(f, "FestivalArchLantern", Vector3.new(2.5, 2.5, 2.5), center + Vector3.new(x, 19, -95), Color3.fromRGB(255, 220, 150), Enum.Material.Glass, Enum.PartType.Ball)
         lantern.CanCollide = false
         local light = Instance.new("PointLight")
         light.Color = Color3.fromRGB(255, 205, 135)
@@ -194,8 +194,8 @@ local function seasonalArt(parent: Instance)
         light.Shadows = false
         light.Parent = lantern
     end
-    beam(f, "FestivalArchHeader", center + Vector3.new(-27, 17, -175), center + Vector3.new(27, 17, -175), 2.5, LIGHT_WOOD)
-    sign(f, center + Vector3.new(0, 0, -205), "CAMPOS SAZONAIS", "Festivais • Desafios • Recompensas")
+    beam(f, "FestivalArchHeader", center + Vector3.new(-27, 17, -95), center + Vector3.new(27, 17, -95), 2.5, LIGHT_WOOD)
+    sign(f, center + Vector3.new(0, 0, -130), "CAMPOS SAZONAIS", "Festivais • Desafios • Recompensas")
 
     -- Low flower islands frame the lawn while keeping its middle open for future events.
     local colors = {
@@ -225,13 +225,13 @@ local function lakeArt(parent: Instance)
 
     -- A small fishing pier and shore markers make the lake a destination, not just scenery.
     local start = Vector3.new(900, 0, 1030)
-    local deck = part(f, "LakePierDeck", Vector3.new(12, 1.2, 62), start + Vector3.new(0, 1, 0), Color3.fromRGB(137, 99, 65), Enum.Material.WoodPlanks)
+    local deck = part(f, "LakePierDeck", Vector3.new(62, 1.2, 12), start + Vector3.new(31, 1, 0), Color3.fromRGB(137, 99, 65), Enum.Material.WoodPlanks)
     deck.CanCollide = true
-    for _, x in {-5, 5} do
-        for z = -26, 26, 13 do
+    for _, z in {-5, 5} do
+        for x = 5, 57, 13 do
             part(f, "PierPost", Vector3.new(1.2, 4.5, 1.2), start + Vector3.new(x, 1.2, z), WOOD, Enum.Material.Wood)
         end
-        beam(f, "PierRail", start + Vector3.new(x, 4, -29), start + Vector3.new(x, 4, 29), 0.7, LIGHT_WOOD)
+        beam(f, "PierRail", start + Vector3.new(2, 4, z), start + Vector3.new(60, 4, z), 0.7, LIGHT_WOOD)
     end
     sign(f, Vector3.new(875, 0, 990), "LAGO AZUL", "Píer de observação", 90)
     for index = 1, 10 do
