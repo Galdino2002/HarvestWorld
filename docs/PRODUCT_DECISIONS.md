@@ -6,6 +6,8 @@
 3. Each owner chooses who can visit: Private, Friends, or Public.
 
 ## Implemented in this milestone
+- WorldService generates the Greenfields blockout with grassland, forest borders, Harvest River, bridge, village square, and five starter buildings.
+- Farm plots are spaced across the fields south of the river rather than in the original tight grid.
 - Farm plots carry an AccessMode attribute, defaulting to Friends.
 - The owner can cycle access from the farm HUD.
 - Farm signs include a visit prompt.
@@ -13,7 +15,7 @@
 - Visiting moves the visitor to the farm but grants no edit permissions.
 
 ## Next milestones
-1. Shared-world layout: roads, river, forest, village, landmarks, and region-based plot placement.
+1. Art pass: sculpted terrain, improved building facades, road details, sound, lighting, and environmental effects.
 2. TeamService: create teams, invite/accept, leave, captain role, member limits.
 3. Team competition: weekly events, server-calculated totals, anti-duplication.
 4. Explicit collaborator permissions, separate from visitor access.
