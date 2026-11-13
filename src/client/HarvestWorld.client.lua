@@ -15,8 +15,8 @@ gui.Parent = player:WaitForChild("PlayerGui")
 
 local panel = Instance.new("Frame")
 panel.Name = "FarmPanel"
-panel.Size = UDim2.fromOffset(286, 314)
-panel.Position = UDim2.new(0, 22, 0.5, -157)
+panel.Size = UDim2.fromOffset(286, 348)
+panel.Position = UDim2.new(0, 22, 0.5, -174)
 panel.BackgroundColor3 = Color3.fromRGB(35, 57, 42)
 panel.BackgroundTransparency = 0.04
 panel.Parent = gui
