@@ -10,7 +10,7 @@ local inventory: {[Player]: {[string]: number}} = {}
 local lastAction: {[Player]: number} = {}
 
 local function getInventory(player: Player): {[string]: number}
-    inventory[player] = inventory[player] or { Carrot = 5, Tomato = 2, Blueberry = 0 }
+    inventory[player] = inventory[player] or { Carrot = 5, Tomato = 2, Blueberry = 2 }
     return inventory[player]
 end
 
