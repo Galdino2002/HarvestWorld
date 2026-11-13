@@ -10,6 +10,7 @@ This pass improves the world as a connected playable space rather than adding mo
 New `src/server/Services/WorldLandscapeService.lua` is loaded by `Bootstrap.server.lua` after the map and region art are generated.
 
 - Frames the valley with broken tree groups instead of a continuous wall.
+- Uses downward terrain raycasts for landscape trees, flowers and rocks so props follow raised terrain instead of assuming every location is at Y=0.
 - Adds broadleaf groves around the forest and village approaches.
 - Adds pine groups and rock clusters around the Highland Ridge.
 - Adds irregular tree groups, flowers and shoreline rocks around Bluewater Lake.
@@ -41,7 +42,7 @@ This work has been committed to GitHub, but cannot be declared visually finished
 - [ ] Confirm the front gardens do not overlap the three reserved build pads.
 - [ ] Confirm the explorer car rests on its parking bay, can be entered and does not block the farm road.
 - [ ] Drive the car through the farm lanes, village approach, forest trail and lake approach.
-- [ ] Inspect forest and mountain trees for terrain intersections and blocked trails.
+- [ ] Inspect forest and mountain trees for terrain intersections and blocked trails; terrain raycasts are implemented, but visual alignment still needs review.
 - [ ] Confirm the lake pier meets the shoreline and the event lawn remains open.
 - [ ] Inspect server and client Output for errors.
 - [ ] Profile with StreamingEnabled and a lower-end Android device; the additional decorative parts must be measured, not assumed to be free.
@@ -50,7 +51,7 @@ This work has been committed to GitHub, but cannot be declared visually finished
 
 - The generated terrain still has a large, intentionally open farm district because players need room to build.
 - Some scenery uses Parts rather than custom meshes. This is a deliberate prototype-friendly approach, not the final asset-quality target.
-- Terrain height is currently authored around a nominal ground level of Y=0. The new decorative placements need checking against the actual terrain surface in Studio.
+- The main ground is authored around Y=0, with raised terrain around the outer ridges. The new landscape dressing raycasts for the terrain surface, but the resulting placements still need visual review in Studio.
 - There has been no Studio screenshot review, multiplayer test, mobile performance profile or automated Luau test for this pass.
 - The car is still a simple prototype vehicle with decorative wheels and direct velocity control, not a suspension-based production vehicle.
 
