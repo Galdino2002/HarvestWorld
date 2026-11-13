@@ -23,6 +23,10 @@ The game takes inspiration from popular farming and collection loops while estab
 8. Enter weekly competitions and climb seasonal leaderboards.
 
 ## 3. World
+
+**Expanded world direction:** Greenfields is planned as a large 3.6 km x 3.6 km landmass with a central village, river crossing, lake, individual farms, harvestable forests, rocky highlands, trails, and meadow clearings. The generated map is a blockout; terrain art, optimization, and playtesting remain required.
+
+Each farm reserves build zones for a chicken coop, barn, and pasture. These are spatial reservations only in this iteration; placement, animal simulation, and construction costs are separate systems to implement.
 Initial planned regions:
 - **Greenfields:** beginner farms and starter crops.
 - **Central Village:** seed shop, market, tutorial NPCs, social hub.
