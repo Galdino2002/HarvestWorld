@@ -78,6 +78,14 @@ local function createPlot(index: number): Model
     billboard.StudsOffset = Vector3.new(0, 0, -0.4)
     billboard.AlwaysOnTop = true
     billboard.Parent = sign
+    local visitPrompt = Instance.new("ProximityPrompt")
+    visitPrompt.Name = "VisitFarmPrompt"
+    visitPrompt.ActionText = "Visitar fazenda"
+    visitPrompt.ObjectText = "Propriedade"
+    visitPrompt.HoldDuration = 0.5
+    visitPrompt.MaxActivationDistance = 12
+    visitPrompt.Parent = sign
+
     local label = Instance.new("TextLabel")
     label.Name = "OwnerName"
     label.Size = UDim2.fromScale(1, 1)
@@ -99,6 +107,7 @@ local function createPlot(index: number): Model
 
     model:SetAttribute("OwnerUserId", 0)
     model:SetAttribute("OwnerName", "Disponível")
+    model:SetAttribute("AccessMode", "Friends")
     model.Parent = plotsFolder
     return model
 end
@@ -132,6 +141,7 @@ function FarmService.Assign(player: Player): Model?
         if plot:GetAttribute("OwnerUserId") == 0 then
             plot:SetAttribute("OwnerUserId", player.UserId)
             plot:SetAttribute("OwnerName", player.DisplayName)
+            plot:SetAttribute("AccessMode", "Friends")
             plot.Name = "Farm_" .. player.UserId
             playerPlots[player] = plot
             updateSign(plot, player.DisplayName .. "'s FARM")
@@ -152,11 +162,19 @@ function FarmService.GetPlayerPlot(player: Player): Model?
     return playerPlots[player]
 end
 
+function FarmService.GetPlotByUserId(userId: number): Model?
+    for _, plot in plotsFolder:GetChildren() do
+        if plot:GetAttribute("OwnerUserId") == userId then return plot end
+    end
+    return nil
+end
+
 function FarmService.Release(player: Player)
     local plot = playerPlots[player]
     if plot then
         plot:SetAttribute("OwnerUserId", 0)
         plot:SetAttribute("OwnerName", "Disponível")
+        plot:SetAttribute("AccessMode", "Friends")
         plot.Name = "FarmPlot_Available"
         updateSign(plot, "FAZENDA DISPONÍVEL")
         for _, child in plot:GetChildren() do
