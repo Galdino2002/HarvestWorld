@@ -74,9 +74,10 @@ local function createPlot(index: number): Model
     sign.CanCollide = false
     local billboard = Instance.new("BillboardGui")
     billboard.Name = "SignText"
-    billboard.Size = UDim2.fromOffset(220, 54)
+    billboard.Size = UDim2.fromOffset(150, 34)
     billboard.StudsOffset = Vector3.new(0, 0, -0.4)
-    billboard.AlwaysOnTop = true
+    billboard.AlwaysOnTop = false
+    billboard.MaxDistance = 85
     billboard.Parent = sign
     local visitPrompt = Instance.new("ProximityPrompt")
     visitPrompt.Name = "VisitFarmPrompt"
@@ -90,8 +91,9 @@ local function createPlot(index: number): Model
     label.Name = "OwnerName"
     label.Size = UDim2.fromScale(1, 1)
     label.BackgroundTransparency = 1
-    label.Text = "FAZENDA DISPONÍVEL"
+    label.Text = "Fazenda livre"
     label.TextColor3 = Color3.fromRGB(75, 55, 35)
+    label.TextStrokeTransparency = 0.65
     label.TextScaled = true
     label.Font = Enum.Font.GothamBold
     label.Parent = billboard
