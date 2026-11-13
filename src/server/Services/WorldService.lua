@@ -316,6 +316,43 @@ local function forestRegions()
  end
 end
 
+local function rollingMeadows()
+ local f = folder(root, "RollingMeadows")
+ -- Low terrain forms break the single-plane horizon without touching player plots,
+ -- the village square, the main river corridor, or the seasonal event lawn.
+ local hills = {
+  {-1480, 12, 80, 138}, {-720, 13, -930, 145},
+  {610, 12, 1040, 128}, {1510, 13, 300, 142},
+  {-520, 11, 1240, 118}, {430, 10, -760, 105},
+  {1180, 11, -430, 125}, {-1510, 10, 1110, 132},
+ }
+ for index, hill in hills do
+  Terrain:FillBall(Vector3.new(hill[1], hill[2], hill[3]), hill[4], Enum.Material.Ground)
+  if index % 2 == 0 then
+   createRock(f, Vector3.new(hill[1] + hill[4] * .55, 0, hill[3] - hill[4] * .25), .85)
+   createRock(f, Vector3.new(hill[1] + hill[4] * .68, 0, hill[3] + hill[4] * .2), .62)
+  end
+ end
+ -- Secondary walking routes make the valley feel connected rather than like isolated set pieces.
+ makeRoad(f, "ElderTreeTrail", {Vector3.new(-700, 1, 120), Vector3.new(-610, 1, 220), Vector3.new(-470, 1, 280), Vector3.new(-310, 1, 300)}, 11)
+ makeRoad(f, "ForestCabinTrail", {Vector3.new(-1170, 1, -775), Vector3.new(-1030, 1, -690), Vector3.new(-900, 1, -560), Vector3.new(-760, 1, -470)}, 10)
+ makeRoad(f, "SeasonalTrail", {Vector3.new(620, 1, 860), Vector3.new(820, 1, 990), Vector3.new(1030, 1, 1140), Vector3.new(1240, 1, 1360)}, 12)
+ makeRoad(f, "MillTrail", {Vector3.new(0, 1, 180), Vector3.new(160, 1, 210), Vector3.new(330, 1, 230), Vector3.new(510, 1, 240)}, 12)
+ -- A controlled amount of clustered ground cover adds scale without carpeting the mobile scene in Parts.
+ for i = 1, 96 do
+  local x = rng:NextNumber(-1600, 1600)
+  local z = rng:NextNumber(-1600, 1600)
+  local nearTown = math.abs(x) < 310 and z < -100 and z > -590
+  local nearFarm = math.abs(x) < 540 and z > 180 and z < 990
+  local nearRiver = math.abs(z - (80 + math.sin(x / 400) * 50)) < 105
+  local nearEvent = (Vector3.new(x, 0, z) - Regions.Regions.SeasonalGrounds.Center).Magnitude < 260
+  if not nearTown and not nearFarm and not nearRiver and not nearEvent then
+   local shrub = makePart(f, "MeadowShrub", Vector3.new(2.4, 1.8, 2.4), Vector3.new(x, .8, z), Color3.fromRGB(73, rng:NextInteger(119, 145), 69), Enum.Material.Grass, Enum.PartType.Ball)
+   shrub.CanCollide = false
+  end
+ end
+end
+
 local function mountains()
  local f = folder(root, "HighlandRidge")
  -- Terrain hills and rocky outcrops form a distant mountain region.
@@ -492,6 +529,7 @@ function WorldService.Init()
  farmDistrictRoads()
  meadowLife()
  forestRegions()
+ rollingMeadows()
  mountains()
  landmarksAndSeasonalGrounds()
  details()
