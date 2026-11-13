@@ -34,3 +34,21 @@ This pass only adds the first exploration layer to Greenfields. Central Village,
 
 ## Next region pass
 After Greenfields has been visually validated in Studio, continue with Central Village: a readable town center, connected alleys, social gathering spots, and useful landmarks.
+
+
+## Environmental art pass
+
+The first authored scenery pass adds:
+- An entrance frame, stone ring and flower beds around the Elder Tree.
+- A mill courtyard, water channel details and warm lanterns.
+- An abandoned campsite beside Whisper Cabin.
+- A stone-and-flower garden around the valley ruins.
+- Trail wayfinding signs at the secondary route junctions.
+
+Discovery interaction signs were moved beside each landmark so they do not sit directly on top of the main landmark geometry.
+
+All scenery is grouped under `HarvestWorldMap/GreenfieldsArt`, making it easy to replace or tune as the region is reviewed. The props are anchored and intentionally kept simple for mobile performance.
+
+## Important validation
+
+This is a code-authored first pass, not a verified Studio capture. Check terrain contact, sign readability from both approach directions, collision, camera framing and mobile performance in Roblox Studio. Adjust positions if the generated terrain or existing paths differ in the live place.
