@@ -36,6 +36,7 @@ PlantService.Init(remotes)
 FarmAccessService.Init(remotes)
 
 local function setupPlayer(player: Player)
+    if player:FindFirstChild("leaderstats") then return end
     local stats = Instance.new("Folder")
     stats.Name = "leaderstats"
     stats.Parent = player
