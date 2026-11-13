@@ -97,17 +97,17 @@ end
 local function buildPasture(plot: Model, pad: BasePart)
  local model = Instance.new("Model"); model.Name = "BuiltPasture"; model.Parent = plot
  local cf = pad.CFrame
- for _, x in {-44, 44} do
-  for z = -22, 22, 11 do makePart(model, "PasturePost", Vector3.new(1, 4, 1), cf * CFrame.new(x, 2, z), Color3.fromRGB(107, 73, 46), Enum.Material.Wood) end
+ for _, x in {-39, 39} do
+  for z = -20, 20, 10 do makePart(model, "PasturePost", Vector3.new(1, 4, 1), cf * CFrame.new(x, 2, z), Color3.fromRGB(107, 73, 46), Enum.Material.Wood) end
  end
- for _, z in {-22, 22} do
-  for x = -44, 44, 11 do makePart(model, "PasturePost", Vector3.new(1, 4, 1), cf * CFrame.new(x, 2, z), Color3.fromRGB(107, 73, 46), Enum.Material.Wood) end
+ for _, z in {-20, 20} do
+  for x = -39, 39, 10 do makePart(model, "PasturePost", Vector3.new(1, 4, 1), cf * CFrame.new(x, 2, z), Color3.fromRGB(107, 73, 46), Enum.Material.Wood) end
  end
  for _, height in {2.8, 4.0} do
-  for _, z in {-22, 22} do makePart(model, "PastureRail", Vector3.new(88, .5, .5), cf * CFrame.new(0, height, z), Color3.fromRGB(143, 101, 65), Enum.Material.Wood) end
-  for _, x in {-44, 44} do makePart(model, "PastureRail", Vector3.new(.5, .5, 44), cf * CFrame.new(x, height, 0), Color3.fromRGB(143, 101, 65), Enum.Material.Wood) end
+  for _, z in {-20, 20} do makePart(model, "PastureRail", Vector3.new(78, .5, .5), cf * CFrame.new(0, height, z), Color3.fromRGB(143, 101, 65), Enum.Material.Wood) end
+  for _, x in {-39, 39} do makePart(model, "PastureRail", Vector3.new(.5, .5, 40), cf * CFrame.new(x, height, 0), Color3.fromRGB(143, 101, 65), Enum.Material.Wood) end
  end
- makePart(model, "PastureGate", Vector3.new(10, 3, .7), cf * CFrame.new(0, 2.7, -22), Color3.fromRGB(143, 101, 65), Enum.Material.Wood)
+ makePart(model, "PastureGate", Vector3.new(10, 3, .7), cf * CFrame.new(0, 2.7, -20), Color3.fromRGB(143, 101, 65), Enum.Material.Wood)
 end
 
 local BUILDERS = {
