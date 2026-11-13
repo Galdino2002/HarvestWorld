@@ -14,29 +14,11 @@ local function getInventory(player: Player): {[string]: number}
 end
 
 local function getPlantSlot(plot: Model, slot: number): BasePart?
-    if slot < 1 or slot > 9 then return nil end
-    local slots = plot:FindFirstChild("PlantSlots")
-    if not slots then
-        slots = Instance.new("Folder")
-        slots.Name = "PlantSlots"
-        slots.Parent = plot
-        local ground = plot.PrimaryPart
-        if not ground then return nil end
-        for i = 1, 9 do
-            local part = Instance.new("Part")
-            part.Name = "Slot_" .. i
-            part.Size = Vector3.new(8, 0.25, 8)
-            part.Anchored = true
-            part.CanCollide = false
-            part.Material = Enum.Material.Ground
-            part.Color = Color3.fromRGB(110, 75, 45)
-            local row = math.floor((i - 1) / 3)
-            local col = (i - 1) % 3
-            part.Position = ground.Position + Vector3.new((col - 1) * 10, 0.65, (row - 1) * 10)
-            part.Parent = slots
-        end
-    end
-    return slots:FindFirstChild("Slot_" .. slot) :: BasePart?
+    if slot < 1 or slot > 9 or slot % 1 ~= 0 then return nil end
+    -- Use the visible garden beds created by FarmService; never create invisible planting slots.
+    local bed = plot:FindFirstChild("GardenBed_" .. tostring(slot))
+    if bed and bed:IsA("BasePart") then return bed end
+    return nil
 end
 
 local function makeCropVisual(slotPart: BasePart, cropId: string, growSeconds: number): Model
@@ -72,6 +54,9 @@ function PlantService.Init(remotes: Folder)
         if not plot or plot:GetAttribute("OwnerUserId") ~= player.UserId then return end
         local slot = getPlantSlot(plot, slotIndex)
         if not slot or slot:FindFirstChild("Crop") then return end
+        local character = player.Character
+        local rootPart = character and character:FindFirstChild("HumanoidRootPart")
+        if not rootPart or (rootPart.Position - slot.Position).Magnitude > 28 then return end
         local playerInventory = getInventory(player)
         if (playerInventory[cropId] or 0) < 1 then return end
 
@@ -85,7 +70,10 @@ function PlantService.Init(remotes: Folder)
         if not plot or plot:GetAttribute("OwnerUserId") ~= player.UserId then return end
         local slot = getPlantSlot(plot, slotIndex)
         local crop = slot and slot:FindFirstChild("Crop")
-        if not crop then return end
+        if not slot or not crop then return end
+        local character = player.Character
+        local rootPart = character and character:FindFirstChild("HumanoidRootPart")
+        if not rootPart or (rootPart.Position - slot.Position).Magnitude > 28 then return end
         local cropId = crop:GetAttribute("CropId")
         local definition = typeof(cropId) == "string" and Crops[cropId]
         if not definition then return end
