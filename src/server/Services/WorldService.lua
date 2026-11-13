@@ -237,6 +237,60 @@ local function riverAndLake()
  makeRoad(f, "BridgeRoadSouth", {Vector3.new(0, 1, 152), Vector3.new(35, 1, 220), Vector3.new(65, 1, 310)}, 30)
 end
 
+
+local function farmDistrictRoads()
+ local roads = folder(root, "FarmDistrictRoads")
+ -- A readable road network links the bridge, every farm row, and the village.
+ makeRoad(roads, "MainFarmLane", {Vector3.new(0, 1, 205), Vector3.new(0, 1, 420), Vector3.new(0, 1, 660), Vector3.new(0, 1, 910)}, 22)
+ for row = 0, 2 do
+  local z = 410 + row * 245
+  makeRoad(roads, "FarmRowLane", {Vector3.new(-520, 1, z), Vector3.new(-350, 1, z), Vector3.new(-115, 1, z), Vector3.new(115, 1, z), Vector3.new(350, 1, z), Vector3.new(520, 1, z)}, 16)
+  for _, x in {-352, -117, 117, 352} do
+   makeRoad(roads, "FarmDriveway", {Vector3.new(x, 1, z), Vector3.new(x, 1, z - 38)}, 9)
+  end
+ end
+ -- Roadside lamps, signposts and small planted beds give the district scale and landmarks.
+ for _, z in {260, 410, 655, 900} do
+  for _, x in {-18, 18} do
+   local pole = makePart(roads, "FarmLaneLamp", Vector3.new(.65, 9, .65), Vector3.new(x, 4.5, z), PALETTE.wood, Enum.Material.Wood)
+   local lamp = makePart(roads, "FarmLaneLantern", Vector3.new(1.8, 1.8, 1.8), pole.Position + Vector3.new(0, 4.6, 0), Color3.fromRGB(255, 224, 157), Enum.Material.Glass, Enum.PartType.Ball)
+   local light = Instance.new("PointLight")
+   light.Brightness = .7
+   light.Range = 13
+   light.Parent = lamp
+  end
+ end
+ for i = 1, 46 do
+  local x = rng:NextNumber(-520, 520)
+  local z = rng:NextNumber(180, 980)
+  local nearRoad = math.abs(x) < 30 or math.abs(z - 410) < 22 or math.abs(z - 655) < 22 or math.abs(z - 900) < 22
+  if not nearRoad then
+   local shrub = makePart(roads, "FarmDistrictShrub", Vector3.new(3, 2.2, 3), Vector3.new(x, 1.1, z), Color3.fromRGB(68, 125, 65), Enum.Material.Grass, Enum.PartType.Ball)
+   shrub.CanCollide = false
+  end
+ end
+end
+
+local function meadowLife()
+ local f = folder(root, "MeadowLife")
+ for i = 1, 280 do
+  local x = rng:NextNumber(-1580, 1580)
+  local z = rng:NextNumber(-1580, 1580)
+  local nearTown = math.abs(x) < 310 and z < -100 and z > -590
+  local nearFarm = math.abs(x) < 540 and z > 180 and z < 990
+  local nearRiver = math.abs(z - (80 + math.sin(x / 400) * 50)) < 100
+  local nearMountain = z < -1200 and x > 650
+  if not nearTown and not nearFarm and not nearRiver and not nearMountain then
+   local bush = makePart(f, "WildflowerPatch", Vector3.new(rng:NextNumber(2, 4), rng:NextNumber(1, 2), rng:NextNumber(2, 4)), Vector3.new(x, .8, z), Color3.fromRGB(75, rng:NextInteger(120, 150), 67), Enum.Material.Grass, Enum.PartType.Ball)
+   bush.CanCollide = false
+   if i % 3 == 0 then
+    local flower = makePart(f, "Wildflower", Vector3.new(.8, .8, .8), Vector3.new(x + 1.2, 1.1, z), ({Color3.fromRGB(245, 204, 104), Color3.fromRGB(231, 143, 165), Color3.fromRGB(245, 239, 211)})[(i % 3) + 1], Enum.Material.SmoothPlastic, Enum.PartType.Ball)
+    flower.CanCollide = false
+   end
+  end
+ end
+end
+
 local function forestRegions()
  local f = folder(root, "Forests")
  makeTreeCluster(f, Vector3.new(-1120, 0, -520), 85, 390, false)
