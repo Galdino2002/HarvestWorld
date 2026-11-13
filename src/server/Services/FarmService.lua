@@ -123,7 +123,7 @@ local function createPlot(index: number): Model
  local column = (index - 1) % 4
  local row = math.floor((index - 1) / 4)
  local center = Vector3.new((column - 1.5) * 235, 0, 280 + row * 245)
- local ground = part(model, "Ground", Vector3.new(190, 1, 190), center, GRASS, Enum.Material.Grass)
+ local ground = part(model, "Ground", Vector3.new(190, 1, 190), center, GRASS, Enum.Material.LeafyGrass)
  model.PrimaryPart = ground
  farmhouse(model, center)
  orchardAndYard(model, center)
