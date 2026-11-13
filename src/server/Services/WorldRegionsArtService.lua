@@ -89,8 +89,10 @@ local function villageArt(parent: Instance)
     -- A small fountain anchors the open market square without blocking the main crossing.
     local center = Vector3.new(0, 0, -382)
     local basin = part(f, "VillageFountainBasin", Vector3.new(34, 2.2, 34), center + Vector3.new(0, 1.1, 0), STONE, Enum.Material.Cobblestone, Enum.PartType.Cylinder)
+    basin.Orientation = Vector3.new(0, 0, 90)
     basin.CanCollide = true
     local water = part(f, "FountainWater", Vector3.new(28, 0.35, 28), center + Vector3.new(0, 2.25, 0), Color3.fromRGB(105, 181, 205), Enum.Material.Glass, Enum.PartType.Cylinder)
+    water.Orientation = Vector3.new(0, 0, 90)
     water.Transparency = 0.18
     water.CanCollide = false
     local column = part(f, "FountainColumn", Vector3.new(5, 7, 5), center + Vector3.new(0, 5.3, 0), Color3.fromRGB(165, 160, 139), Enum.Material.Cobblestone, Enum.PartType.Cylinder)
