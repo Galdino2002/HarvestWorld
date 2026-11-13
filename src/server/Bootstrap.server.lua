@@ -6,6 +6,7 @@ local WorldService = require(script.Parent.Services.WorldService)
 local FarmService = require(script.Parent.Services.FarmService)
 local PlantService = require(script.Parent.Services.PlantService)
 local FarmAccessService = require(script.Parent.Services.FarmAccessService)
+local FarmBuildingService = require(script.Parent.Services.FarmBuildingService)
 
 local remotes = ReplicatedStorage:FindFirstChild("Remotes") :: Folder?
 if not remotes then
@@ -30,6 +31,7 @@ ensureRemote("FarmAccessRequest")
 
 WorldService.Init()
 FarmService.Init()
+FarmBuildingService.Init()
 PlantService.Init(remotes)
 FarmAccessService.Init(remotes)
 
