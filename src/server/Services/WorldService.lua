@@ -4,6 +4,7 @@ local WorldService = {}
 local Terrain = workspace.Terrain
 local root: Folder
 local rng = Random.new(481516)
+local Regions = require(game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("Config"):WaitForChild("WorldRegions"))
 
 local PALETTE = {
  grass = Color3.fromRGB(112, 158, 86),
@@ -240,25 +241,34 @@ end
 
 local function farmDistrictRoads()
  local roads = folder(root, "FarmDistrictRoads")
- -- A readable road network links the bridge, every farm row, and the village.
+ -- Each lane meets the south entrance of all four plots in that row.
+ local layout = Regions.FarmPlots
  makeRoad(roads, "MainFarmLane", {Vector3.new(0, 1, 205), Vector3.new(0, 1, 420), Vector3.new(0, 1, 660), Vector3.new(0, 1, 910)}, 22)
  for row = 0, 2 do
-  local z = 410 + row * 245
-  makeRoad(roads, "FarmRowLane", {Vector3.new(-520, 1, z), Vector3.new(-350, 1, z), Vector3.new(-115, 1, z), Vector3.new(115, 1, z), Vector3.new(350, 1, z), Vector3.new(520, 1, z)}, 16)
-  for _, x in {-352, -117, 117, 352} do
-   makeRoad(roads, "FarmDriveway", {Vector3.new(x, 1, z), Vector3.new(x, 1, z - 38)}, 9)
+  local z = layout.FirstCenter.Z + row * layout.SpacingZ + 112
+  local rowPoints = {Vector3.new(-520, 1, z)}
+  for column = 0, layout.Columns - 1 do
+   local x = layout.FirstCenter.X + column * layout.SpacingX
+   table.insert(rowPoints, Vector3.new(x, 1, z))
+   makeRoad(roads, "FarmDriveway", {Vector3.new(x, 1, z), Vector3.new(x, 1, layout.FirstCenter.Z + row * layout.SpacingZ + 96)}, 9)
   end
+  table.insert(rowPoints, Vector3.new(520, 1, z))
+  makeRoad(roads, "FarmRowLane", rowPoints, 16)
  end
  -- Roadside lamps, signposts and small planted beds give the district scale and landmarks.
- for _, z in {260, 410, 655, 900} do
-  for _, x in {-18, 18} do
-   local pole = makePart(roads, "FarmLaneLamp", Vector3.new(.65, 9, .65), Vector3.new(x, 4.5, z), PALETTE.wood, Enum.Material.Wood)
+ local lampPositions = {Vector3.new(-18, 0, 260), Vector3.new(18, 0, 260)}
+ for row = 0, 2 do
+  local rowZ = layout.FirstCenter.Z + row * layout.SpacingZ + 112
+  table.insert(lampPositions, Vector3.new(-485, 0, rowZ - 13))
+  table.insert(lampPositions, Vector3.new(485, 0, rowZ + 13))
+ end
+ for _, position in lampPositions do
+   local pole = makePart(roads, "FarmLaneLamp", Vector3.new(.65, 9, .65), position + Vector3.new(0, 4.5, 0), PALETTE.wood, Enum.Material.Wood)
    local lamp = makePart(roads, "FarmLaneLantern", Vector3.new(1.8, 1.8, 1.8), pole.Position + Vector3.new(0, 4.6, 0), Color3.fromRGB(255, 224, 157), Enum.Material.Glass, Enum.PartType.Ball)
    local light = Instance.new("PointLight")
    light.Brightness = .7
    light.Range = 13
    light.Parent = lamp
-  end
  end
  for i = 1, 46 do
   local x = rng:NextNumber(-520, 520)
@@ -280,7 +290,8 @@ local function meadowLife()
   local nearFarm = math.abs(x) < 540 and z > 180 and z < 990
   local nearRiver = math.abs(z - (80 + math.sin(x / 400) * 50)) < 100
   local nearMountain = z < -1200 and x > 650
-  if not nearTown and not nearFarm and not nearRiver and not nearMountain then
+  local nearEventGrounds = (Vector3.new(x, 0, z) - Regions.Regions.SeasonalGrounds.Center).Magnitude < 250
+  if not nearTown and not nearFarm and not nearRiver and not nearMountain and not nearEventGrounds then
    local bush = makePart(f, "WildflowerPatch", Vector3.new(rng:NextNumber(2, 4), rng:NextNumber(1, 2), rng:NextNumber(2, 4)), Vector3.new(x, .8, z), Color3.fromRGB(75, rng:NextInteger(120, 150), 67), Enum.Material.Grass, Enum.PartType.Ball)
    bush.CanCollide = false
    if i % 3 == 0 then
@@ -297,7 +308,7 @@ local function forestRegions()
  makeTreeCluster(f, Vector3.new(-1150, 0, 900), 65, 350, false)
  makeTreeCluster(f, Vector3.new(40, 0, -1330), 100, 470, true)
  makeTreeCluster(f, Vector3.new(1330, 0, -720), 60, 330, true)
- makeTreeCluster(f, Vector3.new(1430, 0, 1120), 50, 300, false)
+ makeTreeCluster(f, Vector3.new(1510, 0, 650), 50, 270, false)
  for i = 1, 52 do
   local x = 900 + rng:NextNumber(-230, 230)
   local z = -950 + rng:NextNumber(-230, 230)
@@ -308,10 +319,14 @@ end
 local function mountains()
  local f = folder(root, "HighlandRidge")
  -- Terrain hills and rocky outcrops form a distant mountain region.
- for i = 1, 28 do
-  local x = 850 + (i % 5) * 115
-  local z = -1660 + i * 42
-  Terrain:FillBall(Vector3.new(x, 35 + (i % 4) * 12, z), 100 + (i % 3) * 22, i % 3 == 0 and Enum.Material.Rock or Enum.Material.Ground)
+ for i = 1, 34 do
+  local x = 760 + (i % 6) * 126
+  local z = -1680 + i * 43
+  local height = 48 + (i % 5) * 17
+  local radius = 92 + (i % 3) * 25
+  local material = i % 3 == 0 and Enum.Material.Rock or Enum.Material.Ground
+  Terrain:FillBall(Vector3.new(x, height, z), radius, material)
+  Terrain:FillBall(Vector3.new(x - 42, height - 22, z + 44), radius * .74, material)
  end
  -- Rolling green foothills break the flat horizon and frame the playable valley.
  local foothills = {
@@ -329,6 +344,75 @@ local function mountains()
   createRock(f, Vector3.new(x, 0, z), rng:NextNumber(1, 1.8))
  end
  makeRoad(f, "MountainTrail", {Vector3.new(420, 1, -450), Vector3.new(620, 1, -680), Vector3.new(770, 1, -920), Vector3.new(900, 1, -1190)}, 18)
+ -- A stepped stream and whitewater ribbon tie the ridge to the river below.
+ local cascade = folder(f, "HiddenCascade")
+ for step = 0, 5 do
+  local y = 72 - step * 10
+  local z = -1020 + step * 34
+  local pool = makePart(cascade, "CascadePool", Vector3.new(58 + step * 8, 2, 48), Vector3.new(1030, y - 5, z), PALETTE.water, Enum.Material.Water)
+  pool.CanCollide = false
+  local fall = makePart(cascade, "WaterfallVeil", Vector3.new(30, 17, 2), Vector3.new(1030, y - 5, z - 26), Color3.fromRGB(160, 216, 226), Enum.Material.Glass)
+  fall.Transparency = .28
+  fall.CanCollide = false
+ end
+end
+
+local function landmarksAndSeasonalGrounds()
+ local landmarks = folder(root, "Landmarks")
+ -- Ancient tree: broad layered canopy and a ring path makes it a readable valley landmark.
+ local treeBase = Vector3.new(-700, 0, 120)
+ local trunk = makePart(landmarks, "ElderTreeTrunk", Vector3.new(8, 38, 8), treeBase + Vector3.new(0, 19, 0), Color3.fromRGB(105, 73, 49), Enum.Material.Wood, Enum.PartType.Cylinder)
+ trunk.Orientation = Vector3.new(0, 0, 90)
+ for _, item in {{0, 42, 0, 42}, {-17, 36, 2, 28}, {18, 37, -3, 29}, {0, 53, 4, 25}} do
+  local crown = makePart(landmarks, "ElderTreeCrown", Vector3.new(item[4], item[4] * .82, item[4]), treeBase + Vector3.new(item[1], item[2], item[3]), Color3.fromRGB(76, 130, 69), Enum.Material.Grass, Enum.PartType.Ball)
+  crown.CanCollide = false
+ end
+ for i = 1, 12 do
+  local a = i * math.pi / 6
+  local stone = makePart(landmarks, "ElderTreeStone", Vector3.new(5, 2, 3), treeBase + Vector3.new(math.cos(a) * 26, 1, math.sin(a) * 26), Color3.fromRGB(147, 139, 115), Enum.Material.Cobblestone)
+  stone.CFrame *= CFrame.Angles(0, -a, 0)
+ end
+ -- A small watermill silhouette at the village edge.
+ local mill = folder(landmarks, "OldWatermill")
+ makeHouse(mill, "MillHouse", Vector3.new(510, 1, 240), Color3.fromRGB(167, 128, 83), Color3.fromRGB(106, 71, 55), 44, 42)
+ local wheel = makePart(mill, "MillWheel", Vector3.new(28, 3, 28), Vector3.new(537, 14, 196), Color3.fromRGB(119, 82, 50), Enum.Material.Wood, Enum.PartType.Cylinder)
+ wheel.Orientation = Vector3.new(0, 0, 90)
+ for i = 0, 7 do
+  local a = i * math.pi / 4
+  local spoke = makePart(mill, "MillSpoke", Vector3.new(2, 1, 27), wheel.Position + Vector3.new(math.cos(a) * 8, math.sin(a) * 8, 0), Color3.fromRGB(142, 102, 65), Enum.Material.WoodPlanks)
+  spoke.CFrame *= CFrame.Angles(0, 0, a)
+ end
+ -- Forest cabin and low ancient stonework offer destinations off the main roads.
+ makeHouse(landmarks, "WhisperCabin", Vector3.new(-1170, 1, -775), Color3.fromRGB(138, 105, 72), Color3.fromRGB(74, 86, 70), 32, 28)
+ local ruins = folder(landmarks, "OldRuins")
+ for i = 0, 5 do
+  local a = i * math.pi / 3
+  local p = Vector3.new(760 + math.cos(a) * 33, 0, 540 + math.sin(a) * 33)
+  local pillar = makePart(ruins, "MossyPillar", Vector3.new(7, 13 + (i % 3) * 3, 7), p + Vector3.new(0, 6, 0), Color3.fromRGB(116, 128, 103), Enum.Material.Rock)
+  pillar.CFrame *= CFrame.Angles(0, a, math.rad((i % 2 == 0) and 0 or 4))
+ end
+ makePart(ruins, "RuinLintel", Vector3.new(70, 6, 8), Vector3.new(760, 17, 540), Color3.fromRGB(116, 128, 103), Enum.Material.Rock)
+ -- Open seasonal commons: perimeter planting frames a clear central gathering lawn.
+ local seasonal = folder(root, "SeasonalGrounds")
+ local center = Regions.Regions.SeasonalGrounds.Center
+ makePart(seasonal, "FestivalLawn", Vector3.new(360, .4, 300), center + Vector3.new(0, .2, 0), Color3.fromRGB(119, 166, 91), Enum.Material.Grass)
+ for i = 1, 20 do
+  local side = i % 4
+  local t = math.floor(i / 4)
+  local pos = side == 0 and Vector3.new(center.X - 190, 0, center.Z - 130 + t * 52)
+   or side == 1 and Vector3.new(center.X + 190, 0, center.Z - 130 + t * 52)
+   or side == 2 and Vector3.new(center.X - 150 + t * 62, 0, center.Z - 165)
+   or Vector3.new(center.X - 150 + t * 62, 0, center.Z + 165)
+  local trunk = makePart(seasonal, "SeasonalTreeTrunk", Vector3.new(2.6, 10, 2.6), pos + Vector3.new(0, 5, 0), PALETTE.wood, Enum.Material.Wood, Enum.PartType.Cylinder)
+  trunk.Orientation = Vector3.new(0, 0, 90)
+  local crown = makePart(seasonal, "SeasonalTreeCrown", Vector3.new(11, 12, 11), pos + Vector3.new(0, 12, 0), i % 2 == 0 and Color3.fromRGB(79, 137, 73) or Color3.fromRGB(99, 148, 79), Enum.Material.Grass, Enum.PartType.Ball)
+  crown.CanCollide = false
+ end
+ makePart(seasonal, "FestivalPavilionFloor", Vector3.new(56, 1, 42), center + Vector3.new(0, .5, -190), Color3.fromRGB(162, 128, 87), Enum.Material.WoodPlanks)
+ for _, x in {-24, 24} do
+  makePart(seasonal, "FestivalPavilionPost", Vector3.new(2, 18, 2), center + Vector3.new(x, 9, -190), PALETTE.wood, Enum.Material.Wood)
+ end
+ makePart(seasonal, "FestivalPavilionRoof", Vector3.new(64, 3, 50), center + Vector3.new(0, 19, -190), Color3.fromRGB(153, 79, 61), Enum.Material.Slate)
 end
 
 local function details()
@@ -396,8 +480,6 @@ end
 function WorldService.Init()
  local old = workspace:FindFirstChild("HarvestWorldMap")
  if old then old:Destroy() end
- local oldFarms = workspace:FindFirstChild("PlayerFarms")
- if oldFarms then oldFarms:Destroy() end
  Terrain:Clear()
  -- Roblox terrain grass blades pop in/out with camera distance and look oversized on this stylized map.
  -- Keep the ground material readable at every zoom level; foliage is authored as separate world props.
@@ -411,6 +493,7 @@ function WorldService.Init()
  meadowLife()
  forestRegions()
  mountains()
+ landmarksAndSeasonalGrounds()
  details()
  lighting()
  print("[HarvestWorld] Greenfields expanded: 3.6km world, village, farms, forests, lake and highlands.")

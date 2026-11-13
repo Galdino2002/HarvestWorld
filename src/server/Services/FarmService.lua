@@ -2,6 +2,7 @@
 local FarmService = {}
 local plotsFolder: Folder
 local playerPlots: {[Player]: Model} = {}
+local WorldRegions = require(game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("Config"):WaitForChild("WorldRegions"))
 
 local GRASS = Color3.fromRGB(112, 174, 91)
 local WOOD = Color3.fromRGB(112, 72, 43)
@@ -120,9 +121,10 @@ end
 local function createPlot(index: number): Model
  local model = Instance.new("Model")
  model.Name = "FarmPlot_" .. index
- local column = (index - 1) % 4
- local row = math.floor((index - 1) / 4)
- local center = Vector3.new((column - 1.5) * 235, 0, 280 + row * 245)
+ local column = (index - 1) % WorldRegions.FarmPlots.Columns
+ local row = math.floor((index - 1) / WorldRegions.FarmPlots.Columns)
+ local layout = WorldRegions.FarmPlots
+ local center = layout.FirstCenter + Vector3.new(column * layout.SpacingX, 0, row * layout.SpacingZ)
  local ground = part(model, "Ground", Vector3.new(190, 1, 190), center, GRASS, Enum.Material.Ground)
  model.PrimaryPart = ground
  farmhouse(model, center)
@@ -190,7 +192,7 @@ function FarmService.Init()
  plotsFolder = Instance.new("Folder")
  plotsFolder.Name = "PlayerFarms"
  plotsFolder.Parent = workspace
- for index = 1, 12 do createPlot(index) end
+ for index = 1, WorldRegions.FarmPlots.Count do createPlot(index) end
 end
 
 function FarmService.Assign(player: Player): Model?

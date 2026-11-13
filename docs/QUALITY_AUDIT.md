@@ -37,8 +37,8 @@ Harvest World is a cozy, social farming and life-simulation game. Players own se
 4. **Farming economy:** seed counts are temporary in-memory values; there is no seed shop, selling interface, crop quality, storage, or economy balancing.
 5. **Teams and competition:** the approved direction is team-based competition, but teams, invitations, seasonal events, score calculation, and leaderboards are not implemented yet.
 6. **Visits:** the access mode and gate prompt exist, but the complete visitor experience, clear feedback for denied access, and mobile/console interaction QA remain.
-7. **World art:** the world is still a procedural blockout made mostly from Parts and Terrain. It needs authored terrain contours, coherent biomes, better roads/landmarks, ambient audio, VFX, and final art assets.
-8. **Performance:** the world generator needs profiling on low-end Android devices. Use StreamingEnabled and measure instance count, memory, and frame rate before adding more decoration.
+7. **World art:** the world now has configured region anchors, aligned farm lanes, terrain silhouettes, a seasonal commons, and navigation landmarks. It remains generated and needs Studio terrain review, authored hero assets, ambient audio, VFX, and close/far composition review.
+8. **Performance:** Workspace streaming is configured in Rojo. Profile low-end Android and console targets in Studio and measure instance count, memory, frame rate, and streaming hitches; configuration alone is not a performance sign-off.
 9. **Testing:** no automated Luau test suite or Studio multiplayer/device test has been completed for this pass.
 
 ## Next milestones, in order
