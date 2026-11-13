@@ -81,10 +81,18 @@ local function buildZone(model: Model, name: string, center: Vector3, offset: Ve
 end
 
 
-local function farmhouse(model: Model, center: Vector3)
+local HOUSE_STYLES = {
+ { wall = Color3.fromRGB(231, 211, 169), roof = Color3.fromRGB(143, 74, 61), trim = Color3.fromRGB(248, 225, 183) },
+ { wall = Color3.fromRGB(205, 220, 183), roof = Color3.fromRGB(83, 119, 78), trim = Color3.fromRGB(239, 229, 195) },
+ { wall = Color3.fromRGB(225, 190, 157), roof = Color3.fromRGB(91, 105, 125), trim = Color3.fromRGB(246, 218, 181) },
+ { wall = Color3.fromRGB(215, 207, 184), roof = Color3.fromRGB(126, 82, 67), trim = Color3.fromRGB(247, 232, 202) },
+}
+
+local function farmhouse(model: Model, center: Vector3, plotIndex: number)
  center = center + Vector3.new(0, 0, -55)
- local wall = Color3.fromRGB(231, 211, 169)
- local roof = Color3.fromRGB(143, 74, 61)
+ local style = HOUSE_STYLES[((plotIndex - 1) % #HOUSE_STYLES) + 1]
+ local wall = style.wall
+ local roof = style.roof
  part(model, "FarmhouseFoundation", Vector3.new(42, 1.2, 34), center + Vector3.new(0, 1, -7), Color3.fromRGB(142, 132, 111), Enum.Material.Cobblestone)
  part(model, "FarmhouseWalls", Vector3.new(36, 15, 28), center + Vector3.new(0, 9, -7), wall, Enum.Material.WoodPlanks)
  local leftRoof = part(model, "FarmhouseRoofLeft", Vector3.new(42, 2, 19), center + Vector3.new(0, 17, -16), roof, Enum.Material.Slate)
@@ -93,13 +101,26 @@ local function farmhouse(model: Model, center: Vector3)
  rightRoof.CFrame *= CFrame.Angles(math.rad(32), 0, 0)
  part(model, "FarmhouseDoor", Vector3.new(5, 9, .8), center + Vector3.new(0, 5.5, 7), WOOD, Enum.Material.Wood)
  for _, x in {-11, 11} do
-  part(model, "FarmhouseWindowFrame", Vector3.new(6, 5, .8), center + Vector3.new(x, 10, 7), WOOD, Enum.Material.Wood)
+  part(model, "FarmhouseWindowFrame", Vector3.new(6, 5, .8), center + Vector3.new(x, 10, 7), style.trim, Enum.Material.Wood)
   part(model, "FarmhouseWindow", Vector3.new(4.8, 3.8, .3), center + Vector3.new(x, 10, 6.5), Color3.fromRGB(145, 202, 214), Enum.Material.Glass)
+  for _, side in {-1, 1} do
+   part(model, "WindowShutter", Vector3.new(1.1, 4.7, .7), center + Vector3.new(x + side * 3.1, 10, 7), WOOD, Enum.Material.WoodPlanks)
+  end
+  local flowerBox = part(model, "WindowFlowerBox", Vector3.new(6.4, 1, 1.4), center + Vector3.new(x, 7.1, 5.6), WOOD, Enum.Material.WoodPlanks)
+  flowerBox.CanCollide = false
+  for bloomIndex = 1, 3 do
+   local bloom = part(model, "WindowBloom", Vector3.new(1.1, 1.1, 1.1), center + Vector3.new(x - 1.8 + (bloomIndex - 1) * 1.8, 8, 5.4), bloomIndex % 2 == 0 and Color3.fromRGB(238, 171, 112) or Color3.fromRGB(222, 135, 163), Enum.Material.SmoothPlastic)
+   bloom.Shape = Enum.PartType.Ball
+   bloom.CanCollide = false
+  end
  end
  part(model, "FarmhousePorch", Vector3.new(28, .7, 8), center + Vector3.new(0, 2, 11), Color3.fromRGB(155, 111, 71), Enum.Material.WoodPlanks)
+ part(model, "PorchAwning", Vector3.new(32, .8, 7), center + Vector3.new(0, 13.4, 12), style.roof, Enum.Material.WoodPlanks)
  for _, x in {-12, 12} do part(model, "PorchSupport", Vector3.new(.8, 7, .8), center + Vector3.new(x, 5, 14), CREAM, Enum.Material.Wood) end
  part(model, "Chimney", Vector3.new(5, 11, 5), center + Vector3.new(13, 22, -4), Color3.fromRGB(151, 91, 72), Enum.Material.Brick)
- local mailbox = part(model, "Mailbox", Vector3.new(3, 2, 2), center + Vector3.new(15, 2, 20), Color3.fromRGB(70, 111, 153), Enum.Material.Metal)
+ part(model, "ChimneyCap", Vector3.new(6.5, 1, 6.5), center + Vector3.new(13, 27.5, -4), Color3.fromRGB(103, 76, 65), Enum.Material.Brick)
+ local mailboxColor = ({Color3.fromRGB(70, 111, 153), Color3.fromRGB(167, 82, 68), Color3.fromRGB(81, 126, 79), Color3.fromRGB(190, 151, 73)})[((plotIndex - 1) % 4) + 1]
+ local mailbox = part(model, "Mailbox", Vector3.new(3, 2, 2), center + Vector3.new(15, 2, 20), mailboxColor, Enum.Material.Metal)
  mailbox.CanCollide = false
  part(model, "MailboxPost", Vector3.new(.6, 3, .6), center + Vector3.new(15, 1.5, 20), WOOD, Enum.Material.Wood)
 end
@@ -146,8 +167,19 @@ local function createPlot(index: number): Model
  local center = layout.FirstCenter + Vector3.new(column * layout.SpacingX, 0, row * layout.SpacingZ)
  local ground = part(model, "Ground", Vector3.new(190, 1, 190), center, GRASS, Enum.Material.Ground)
  model.PrimaryPart = ground
- farmhouse(model, center)
+ farmhouse(model, center, index)
  orchardAndYard(model, center)
+ -- A distinct front-yard garden gives every property a little identity without occupying build pads.
+ local gardenSide = index % 2 == 0 and 1 or -1
+ local gardenCenter = center + Vector3.new(gardenSide * 57, 0, 60)
+ local gardenBase = part(model, "FrontGardenBed", Vector3.new(25, .6, 13), gardenCenter + Vector3.new(0, .3, 0), Color3.fromRGB(99, 125, 72), Enum.Material.Ground)
+ gardenBase.CanCollide = false
+ for flowerIndex = 1, 7 do
+  local x = gardenCenter.X - 10 + flowerIndex * 3
+  local bloom = part(model, "FrontGardenBloom", Vector3.new(1.5, 1.3, 1.5), Vector3.new(x, 1.2, gardenCenter.Z + (flowerIndex % 2 == 0 and 2 or -2)), ({Color3.fromRGB(241, 193, 105), Color3.fromRGB(222, 137, 163), Color3.fromRGB(239, 230, 194)})[((flowerIndex + index) % 3) + 1], Enum.Material.SmoothPlastic)
+  bloom.Shape = Enum.PartType.Ball
+  bloom.CanCollide = false
+ end
  part(model, "FarmPath", Vector3.new(12, .2, 132), center + Vector3.new(0, .58, 20), Color3.fromRGB(177, 143, 99), Enum.Material.Cobblestone)
  part(model, "FrontStep", Vector3.new(15, .3, 5), center + Vector3.new(0, .72, 91), Color3.fromRGB(145, 112, 76), Enum.Material.WoodPlanks)
  fence(model, center, 91)
