@@ -98,7 +98,7 @@ local function farmhouse(model: Model, center: Vector3)
 end
 
 local function orchardAndYard(model: Model, center: Vector3)
- for i, offset in {{-76, -8}, {-76, 18}, {76, -8}, {76, 18}} do
+ for i, offset in {{-78, -5}, {-78, 22}, {-78, 49}, {-78, 76}} do
   makeTree(model, center + Vector3.new(offset[1], 0, offset[2]), .85 + (i % 2) * .12)
  end
  -- A small water trough and hay bales make the yard feel used, not like an empty template.
