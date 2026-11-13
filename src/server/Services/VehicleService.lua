@@ -119,7 +119,11 @@ local function buildCar(parent: Instance): Model
 
     prompt.Triggered:Connect(function(player)
         if driverSeat and not driverSeat.Occupant then
-            driverSeat:Sit(player.Character and player.Character:FindFirstChildOfClass("Humanoid") or nil)
+            local character = player.Character
+            local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+            if humanoid then
+                driverSeat:Sit(humanoid)
+            end
         end
     end)
 
