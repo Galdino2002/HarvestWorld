@@ -70,8 +70,13 @@ local function buildCoop(plot: Model, pad: BasePart)
  local cf = pad.CFrame
  makePart(model, "Floor", Vector3.new(30, 1, 24), cf * CFrame.new(0, 1, 0), Color3.fromRGB(145, 105, 68), Enum.Material.WoodPlanks)
  makePart(model, "Walls", Vector3.new(28, 12, 22), cf * CFrame.new(0, 7, 0), Color3.fromRGB(222, 190, 139), Enum.Material.WoodPlanks)
- makePart(model, "Roof", Vector3.new(34, 2, 28), cf * CFrame.new(0, 14, 0), Color3.fromRGB(151, 69, 57), Enum.Material.Slate)
- makePart(model, "Door", Vector3.new(5, 8, .5), cf * CFrame.new(0, 4.5, -11.3), Color3.fromRGB(92, 61, 39), Enum.Material.Wood)
+ local roofLeft = makePart(model, "RoofLeft", Vector3.new(36, 2, 17), cf * CFrame.new(0, 14, -7) * CFrame.Angles(math.rad(-29), 0, 0), Color3.fromRGB(151, 69, 57), Enum.Material.Slate)
+ local roofRight = makePart(model, "RoofRight", Vector3.new(36, 2, 17), cf * CFrame.new(0, 14, 7) * CFrame.Angles(math.rad(29), 0, 0), Color3.fromRGB(151, 69, 57), Enum.Material.Slate)
+ makePart(model, "DoorFrame", Vector3.new(7, 9, .8), cf * CFrame.new(0, 4.5, -11.6), Color3.fromRGB(105, 70, 44), Enum.Material.Wood)
+ makePart(model, "Door", Vector3.new(5, 8, .5), cf * CFrame.new(0, 4.5, -12), Color3.fromRGB(145, 103, 66), Enum.Material.Wood)
+ for _, x in {-9, 9} do
+  makePart(model, "CoopWindow", Vector3.new(4, 3, .3), cf * CFrame.new(x, 8, -11.2), Color3.fromRGB(151, 205, 215), Enum.Material.Glass)
+ end
  for i = 1, 3 do animal(model, "Chicken", cf * CFrame.new(-7 + i * 7, 3, 19), Color3.fromRGB(247, 241, 222)) end
 end
 
@@ -80,8 +85,11 @@ local function buildBarn(plot: Model, pad: BasePart)
  local cf = pad.CFrame
  makePart(model, "Floor", Vector3.new(38, 1, 32), cf * CFrame.new(0, 1, 0), Color3.fromRGB(145, 105, 68), Enum.Material.WoodPlanks)
  makePart(model, "Walls", Vector3.new(36, 16, 30), cf * CFrame.new(0, 9, 0), Color3.fromRGB(160, 69, 57), Enum.Material.WoodPlanks)
- makePart(model, "Roof", Vector3.new(43, 2.5, 36), cf * CFrame.new(0, 18, 0), Color3.fromRGB(75, 83, 91), Enum.Material.Slate)
- makePart(model, "Door", Vector3.new(12, 11, .7), cf * CFrame.new(0, 6, -15.5), Color3.fromRGB(104, 70, 45), Enum.Material.Wood)
+ makePart(model, "RoofLeft", Vector3.new(48, 2.5, 21), cf * CFrame.new(0, 18, -8) * CFrame.Angles(math.rad(-28), 0, 0), Color3.fromRGB(75, 83, 91), Enum.Material.Slate)
+ makePart(model, "RoofRight", Vector3.new(48, 2.5, 21), cf * CFrame.new(0, 18, 8) * CFrame.Angles(math.rad(28), 0, 0), Color3.fromRGB(75, 83, 91), Enum.Material.Slate)
+ makePart(model, "BarnDoorFrame", Vector3.new(14, 12, .8), cf * CFrame.new(0, 6, -15.6), Color3.fromRGB(95, 59, 40), Enum.Material.Wood)
+ makePart(model, "DoorLeft", Vector3.new(6, 11, .5), cf * CFrame.new(-3, 6, -16), Color3.fromRGB(158, 105, 64), Enum.Material.Wood)
+ makePart(model, "DoorRight", Vector3.new(6, 11, .5), cf * CFrame.new(3, 6, -16), Color3.fromRGB(158, 105, 64), Enum.Material.Wood)
  animal(model, "Cow", cf * CFrame.new(-7, 3, 22), Color3.fromRGB(238, 235, 220))
  animal(model, "Cow", cf * CFrame.new(8, 3, 22), Color3.fromRGB(238, 235, 220))
 end
@@ -95,8 +103,11 @@ local function buildPasture(plot: Model, pad: BasePart)
  for _, z in {-22, 22} do
   for x = -44, 44, 11 do makePart(model, "PasturePost", Vector3.new(1, 4, 1), cf * CFrame.new(x, 2, z), Color3.fromRGB(107, 73, 46), Enum.Material.Wood) end
  end
- for _, z in {-22, 22} do makePart(model, "PastureRail", Vector3.new(88, .5, .5), cf * CFrame.new(0, 2.8, z), Color3.fromRGB(143, 101, 65), Enum.Material.Wood) end
- for _, x in {-44, 44} do makePart(model, "PastureRail", Vector3.new(.5, .5, 44), cf * CFrame.new(x, 2.8, 0), Color3.fromRGB(143, 101, 65), Enum.Material.Wood) end
+ for _, height in {2.8, 4.0} do
+  for _, z in {-22, 22} do makePart(model, "PastureRail", Vector3.new(88, .5, .5), cf * CFrame.new(0, height, z), Color3.fromRGB(143, 101, 65), Enum.Material.Wood) end
+  for _, x in {-44, 44} do makePart(model, "PastureRail", Vector3.new(.5, .5, 44), cf * CFrame.new(x, height, 0), Color3.fromRGB(143, 101, 65), Enum.Material.Wood) end
+ end
+ makePart(model, "PastureGate", Vector3.new(10, 3, .7), cf * CFrame.new(0, 2.7, -22), Color3.fromRGB(143, 101, 65), Enum.Material.Wood)
 end
 
 local BUILDERS = {
