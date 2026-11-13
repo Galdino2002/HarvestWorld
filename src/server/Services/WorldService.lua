@@ -50,7 +50,7 @@ local function createHarvestTree(parent: Instance, position: Vector3, scale: num
  model:SetAttribute("ResourceType", "Wood")
  model.Parent = parent
  local trunkHeight = 13 * scale
- local trunk = makePart(model, "Trunk", Vector3.new(trunkHeight, 3.2, 3.2) * scale, position + Vector3.new(0, trunkHeight / 2, 0), kind == "Pine" and Color3.fromRGB(91, 75, 59) or Color3.fromRGB(119, 81, 52), Enum.Material.Wood, Enum.PartType.Cylinder)
+ local trunk = makePart(model, "Trunk", Vector3.new(trunkHeight, 3.2 * scale, 3.2 * scale), position + Vector3.new(0, trunkHeight / 2, 0), kind == "Pine" and Color3.fromRGB(91, 75, 59) or Color3.fromRGB(119, 81, 52), Enum.Material.Wood, Enum.PartType.Cylinder)
  trunk.Orientation = Vector3.new(0, 0, 90)
  local leafColor = kind == "Pine" and Color3.fromRGB(48, 105, 82) or Color3.fromRGB(rng:NextInteger(65, 92), rng:NextInteger(125, 157), rng:NextInteger(65, 91))
  if kind == "Pine" then
@@ -223,12 +223,10 @@ local function riverAndLake()
    bank.CFrame = CFrame.lookAt(bank.Position, bank.Position + (b - a))
   end
  end
- -- Lake built from overlapping soft-edged water volumes.
- for _, offset in {Vector3.new(0, 0, 0), Vector3.new(-85, 0, 15), Vector3.new(82, 0, -12), Vector3.new(0, 0, 68)} do
-  local lake = makePart(f, "BluewaterLake", Vector3.new(190, 2, 190), Vector3.new(1120, 0, 1030) + offset, PALETTE.water, Enum.Material.Water, Enum.PartType.Ball)
-  lake.Size = Vector3.new(190, 2, 190)
-  lake.CanCollide = false
- end
+ -- One broad elliptical lake surface avoids the overlapping circular seams of the old placeholder.
+ local lake = makePart(f, "BluewaterLake", Vector3.new(2, 360, 285), Vector3.new(1120, 0, 1030), PALETTE.water, Enum.Material.Water, Enum.PartType.Cylinder)
+ lake.Orientation = Vector3.new(0, 0, 90)
+ lake.CanCollide = false
  for _, x in {-24, 24} do
   makePart(f, "BridgeRail", Vector3.new(1.5, 5, 110), Vector3.new(x, 5, 95), PALETTE.wood, Enum.Material.Wood)
   for z = 45, 145, 12 do makePart(f, "BridgePost", Vector3.new(1.8, 6, 1.8), Vector3.new(x, 5, z), PALETTE.wood, Enum.Material.Wood) end
