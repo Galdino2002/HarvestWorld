@@ -44,7 +44,13 @@ local function buildCar(parent: Instance): Model
     local base = Instance.new("Part")
     base.Name = "Chassis"
     base.Size = Vector3.new(8, 1.1, 12)
-    base.Position = Vector3.new(-65, 2.1, 165)
+    local parkingPosition = Vector3.new(-65, 0, 165)
+    local groundParams = RaycastParams.new()
+    groundParams.FilterType = Enum.RaycastFilterType.Exclude
+    groundParams.FilterDescendantsInstances = {model}
+    local groundHit = workspace:Raycast(parkingPosition + Vector3.new(0, 300, 0), Vector3.new(0, -600, 0), groundParams)
+    local groundY = groundHit and groundHit.Position.Y or 0
+    base.Position = Vector3.new(parkingPosition.X, groundY + 2.35, parkingPosition.Z)
     base.Color = Color3.fromRGB(54, 70, 57)
     base.Material = Enum.Material.Metal
     base.Anchored = false
@@ -55,7 +61,7 @@ local function buildCar(parent: Instance): Model
     local parkingBay = Instance.new("Part")
     parkingBay.Name = "VehicleParkingBay"
     parkingBay.Size = Vector3.new(17, .3, 20)
-    parkingBay.Position = Vector3.new(-65, .15, 165)
+    parkingBay.Position = Vector3.new(parkingPosition.X, groundY + .15, parkingPosition.Z)
     parkingBay.Anchored = true
     parkingBay.Color = Color3.fromRGB(145, 119, 83)
     parkingBay.Material = Enum.Material.Ground
@@ -79,10 +85,10 @@ local function buildCar(parent: Instance): Model
 
     for _, x in {-3.9, 3.9} do
         for _, z in {-3.8, 3.8} do
-            local wheel = add("AllTerrainWheel", Vector3.new(2.5, 1.15, 2.5), Vector3.new(x, .1, z), Color3.fromRGB(35, 38, 36), Enum.Material.Rubber, Enum.PartType.Cylinder)
-            wheel.CFrame *= CFrame.Angles(0, 0, math.rad(90))
-            local hub = add("WheelHub", Vector3.new(1.05, 1.2, 1.05), Vector3.new(x * 1.02, .1, z), Color3.fromRGB(164, 166, 151), Enum.Material.Metal, Enum.PartType.Cylinder)
-            hub.CFrame *= CFrame.Angles(0, 0, math.rad(90))
+            local wheel = add("AllTerrainWheel", Vector3.new(1.25, 3, 3), Vector3.new(x, -.85, z), Color3.fromRGB(35, 38, 36), Enum.Material.Rubber, Enum.PartType.Cylinder)
+            wheel.CFrame *= CFrame.Angles(0, 0, 0)
+            local hub = add("WheelHub", Vector3.new(.35, 1.35, 1.35), Vector3.new(x * 1.02, -.85, z), Color3.fromRGB(164, 166, 151), Enum.Material.Metal, Enum.PartType.Cylinder)
+            hub.CFrame *= CFrame.Angles(0, 0, 0)
         end
     end
 
