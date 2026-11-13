@@ -48,3 +48,9 @@ The shared world contains public regions and individually assigned farm plots di
 
 ## Global competition
 Use one authoritative schedule, idempotent season finalization, duplicate submission protection, deterministic scoring, and cross-server aggregation. OrderedDataStore can support leaderboard ordering; MemoryStoreService can coordinate temporary cross-server state. Team totals are calculated server-side.
+
+
+## Greenfields world generation
+- WorldService generates the first region: grassland, forest borders, Harvest River, wooden bridge, village square, and starter buildings.
+- FarmService places individual plots south of the river in a spaced layout.
+- This is a server-generated blockout. Final terrain sculpting, detailed assets, sound, water effects, and performance QA remain future art tasks.
