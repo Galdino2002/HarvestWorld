@@ -193,11 +193,12 @@ local function mountainGarden(ridge: Folder)
     }
 
     for index, data in shoulders do
+        local base = groundPosition(data[1], data[3])
         local rock = makePart(
             dressing,
             "LayeredMountainShoulder",
             Vector3.new(data[4], data[5], data[6]),
-            Vector3.new(data[1], data[2], data[3]),
+            base + Vector3.new(0, data[5] * 0.22, 0),
             index % 2 == 0 and COLORS.rockLight or COLORS.rock,
             Enum.Material.Rock
         )
@@ -209,7 +210,7 @@ local function mountainGarden(ridge: Folder)
             dressing,
             "MossyMountainLedge",
             Vector3.new(data[4] * 0.78, 5, data[6] * 0.78),
-            Vector3.new(data[1] - 12, data[2] + data[5] * 0.42, data[3] + 9),
+            base + Vector3.new(-12, data[5] * 0.68, 9),
             index % 2 == 0 and COLORS.leafB or COLORS.leafA,
             Enum.Material.Grass
         )
