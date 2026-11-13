@@ -122,7 +122,7 @@ local function orchardAndYard(model: Model, center: Vector3)
   part(model, "TroughEnd", Vector3.new(.45, .45, 4.5), troughBase + Vector3.new(side * 5.8, .95, 0), Color3.fromRGB(105, 72, 47), Enum.Material.Wood)
  end
  for _, x in {-4, 4} do
-  part(model, "TroughLeg", Vector3.new(.7, 1.2, .7), troughBase + Vector3.new(x, -.9, 0), Color3.fromRGB(105, 72, 47), Enum.Material.Wood)
+  part(model, "TroughLeg", Vector3.new(.8, .8, .8), troughBase + Vector3.new(x, -.4, 0), Color3.fromRGB(105, 72, 47), Enum.Material.Wood)
  end
  for _, offset in {Vector3.new(25, 1.5, 20), Vector3.new(31, 1.5, 24)} do
   local hay = part(model, "HayBale", Vector3.new(5, 3, 4), center + offset, Color3.fromRGB(207, 174, 91), Enum.Material.Grass)
