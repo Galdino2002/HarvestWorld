@@ -67,6 +67,8 @@ local function nature()
  end
 end
 function WorldService.Init()
+ local defaultBaseplate=workspace:FindFirstChild("Baseplate")
+ if defaultBaseplate and defaultBaseplate:IsA("BasePart") then defaultBaseplate:Destroy() end
  if workspace:FindFirstChild("HarvestWorldMap") then root=workspace.HarvestWorldMap :: Folder; return end
  root=Instance.new("Folder"); root.Name="HarvestWorldMap"; root.Parent=workspace
  part(root,"GreenfieldsGround",Vector3.new(1200,2,1200),Vector3.new(0,-1.7,0),grass,Enum.Material.Grass)
