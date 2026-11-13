@@ -2,6 +2,8 @@
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+print("[HarvestWorld] CLIENT SYNC TEST V2 - LocalScript iniciado.")
+
 local player = Players.LocalPlayer
 local remotes = ReplicatedStorage:WaitForChild("Remotes")
 local plantRequest = remotes:WaitForChild("PlantRequest") :: RemoteEvent
@@ -45,7 +47,8 @@ local title = Instance.new("TextLabel")
 title.Size = UDim2.new(1, -20, 0, 32)
 title.Position = UDim2.fromOffset(10, 6)
 title.BackgroundTransparency = 1
-title.Text = "HARVEST WORLD"
+title.Text = "HARVEST WORLD | TESTE V2"
+title.TextColor3 = Color3.fromRGB(120, 255, 170)
 title.TextColor3 = Color3.new(1, 1, 1)
 title.Font = Enum.Font.GothamBlack
 title.TextSize = 18
