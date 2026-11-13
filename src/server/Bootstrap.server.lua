@@ -4,6 +4,7 @@ local Players = game:GetService("Players")
 
 local FarmService = require(script.Parent.Services.FarmService)
 local PlantService = require(script.Parent.Services.PlantService)
+local FarmAccessService = require(script.Parent.Services.FarmAccessService)
 
 local remotes = ReplicatedStorage:FindFirstChild("Remotes") :: Folder?
 if not remotes then
@@ -24,9 +25,11 @@ end
 
 ensureRemote("PlantRequest")
 ensureRemote("HarvestRequest")
+ensureRemote("FarmAccessRequest")
 
 FarmService.Init()
 PlantService.Init(remotes)
+FarmAccessService.Init(remotes)
 
 local function setupPlayer(player: Player)
     local stats = Instance.new("Folder")
