@@ -4,7 +4,6 @@ local Crops = require(ReplicatedStorage.Shared.Config.Crops)
 local FarmService = require(script.Parent.FarmService)
 
 local PlantService = {}
-local plantsFolder: Folder
 local plantRequest: RemoteEvent
 local harvestRequest: RemoteEvent
 local inventory: {[Player]: {[string]: number}} = {}
@@ -62,9 +61,8 @@ local function makeCropVisual(slotPart: BasePart, cropId: string, growSeconds: n
 end
 
 function PlantService.Init(remotes: Folder)
-    plantsFolder = workspace
-    plantRequest = remotes:FindFirstChild("PlantRequest") as RemoteEvent
-    harvestRequest = remotes:FindFirstChild("HarvestRequest") as RemoteEvent
+    plantRequest = remotes:FindFirstChild("PlantRequest") :: RemoteEvent?
+    harvestRequest = remotes:FindFirstChild("HarvestRequest") :: RemoteEvent?
 
     plantRequest.OnServerEvent:Connect(function(player, cropId, slotIndex)
         if typeof(cropId) ~= "string" or typeof(slotIndex) ~= "number" then return end
