@@ -1,0 +1,53 @@
+--!strict
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+
+local FarmService = require(script.Services.FarmService)
+local PlantService = require(script.Services.PlantService)
+
+local remotes = ReplicatedStorage:FindFirstChild("Remotes") :: Folder?
+if not remotes then
+    remotes = Instance.new("Folder")
+    remotes.Name = "Remotes"
+    remotes.Parent = ReplicatedStorage
+end
+
+local function ensureRemote(name: string): RemoteEvent
+    local remote = remotes:FindFirstChild(name) :: RemoteEvent?
+    if not remote then
+        remote = Instance.new("RemoteEvent")
+        remote.Name = name
+        remote.Parent = remotes
+    end
+    return remote
+end
+
+ensureRemote("PlantRequest")
+ensureRemote("HarvestRequest")
+
+FarmService.Init()
+PlantService.Init(remotes)
+
+local function setupPlayer(player: Player)
+    local stats = Instance.new("Folder")
+    stats.Name = "leaderstats"
+    stats.Parent = player
+
+    local coins = Instance.new("IntValue")
+    coins.Name = "Coins"
+    coins.Value = 100
+    coins.Parent = stats
+
+    FarmService.Assign(player)
+end
+
+Players.PlayerAdded:Connect(setupPlayer)
+Players.PlayerRemoving:Connect(function(player)
+    FarmService.Release(player)
+end)
+
+for _, player in Players:GetPlayers() do
+    task.spawn(setupPlayer, player)
+end
+
+print("[HarvestWorld] Server foundation initialized.")
