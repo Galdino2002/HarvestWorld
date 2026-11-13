@@ -75,6 +75,7 @@ end
 
 
 local function farmhouse(model: Model, center: Vector3)
+ center = center + Vector3.new(0, 0, -43)
  local wall = Color3.fromRGB(231, 211, 169)
  local roof = Color3.fromRGB(143, 74, 61)
  part(model, "FarmhouseFoundation", Vector3.new(42, 1.2, 34), center + Vector3.new(0, 1, -7), Color3.fromRGB(142, 132, 111), Enum.Material.Cobblestone)
@@ -147,7 +148,7 @@ local function createPlot(index: number): Model
  for i = 1, 9 do
   local rowSlot = math.floor((i - 1) / 3)
   local col = (i - 1) % 3
-  local bed = part(model, "GardenBed_" .. i, Vector3.new(10, .35, 10), center + Vector3.new((col - 1) * 13, .72, 79 - rowSlot * 14), Color3.fromRGB(112, 75, 48), Enum.Material.Ground)
+  local bed = part(model, "GardenBed_" .. i, Vector3.new(10, .35, 10), center + Vector3.new(55 + col * 13, .72, 25 + rowSlot * 14), Color3.fromRGB(112, 75, 48), Enum.Material.Ground)
   bed:SetAttribute("PlantSlot", i)
  end
 
@@ -191,7 +192,7 @@ function FarmService.Assign(player: Player): Model?
    playerPlots[player] = plot
    updateSign(plot, player.DisplayName .. "'s FARM")
    local function moveToFarm(character: Model)
-    character:PivotTo(plot:GetPivot() + Vector3.new(0, 5, 70))
+    character:PivotTo(plot:GetPivot() + Vector3.new(0, 5, 76))
    end
    if player.Character then moveToFarm(player.Character) end
    player.CharacterAdded:Connect(moveToFarm)
