@@ -311,7 +311,17 @@ local function mountains()
  for i = 1, 28 do
   local x = 850 + (i % 5) * 115
   local z = -1660 + i * 42
-  Terrain:FillBall(Vector3.new(x, 35 + (i % 4) * 12, z), 100 + (i % 3) * 22, i % 3 == 0 and Enum.Material.Rock or Enum.Material.Grass)
+  Terrain:FillBall(Vector3.new(x, 35 + (i % 4) * 12, z), 100 + (i % 3) * 22, i % 3 == 0 and Enum.Material.Rock or Enum.Material.Ground)
+ end
+ -- Rolling green foothills break the flat horizon and frame the playable valley.
+ local foothills = {
+  { -1480, -1050, 185 }, { -1510, -420, 155 }, { -1490, 520, 190 },
+  { -1320, 1320, 210 }, { -650, 1510, 175 }, { 120, 1510, 165 },
+  { 720, 1490, 190 }, { 1480, 1120, 210 }, { 1510, 360, 175 },
+  { 1480, -520, 190 }, { 1220, -1390, 210 }, { 380, -1510, 170 },
+ }
+ for _, hill in foothills do
+  Terrain:FillBall(Vector3.new(hill[1], 22, hill[2]), hill[3], Enum.Material.Ground)
  end
  for i = 1, 22 do
   local x = 830 + rng:NextNumber(-170, 380)
@@ -366,7 +376,8 @@ function WorldService.Init()
  -- Keep the ground material readable at every zoom level; foliage is authored as separate world props.
  root = folder(workspace, "HarvestWorldMap")
  -- A 3.6 km x 3.6 km landmass. Region streaming should be enabled in Studio.
- Terrain:FillBlock(CFrame.new(0, -14, 0), Vector3.new(3600, 28, 3600), Enum.Material.LeafyGrass)
+ Terrain:SetMaterialColor(Enum.Material.Ground, Color3.fromRGB(112, 148, 88))
+ Terrain:FillBlock(CFrame.new(0, -14, 0), Vector3.new(3600, 28, 3600), Enum.Material.Ground)
  riverAndLake()
  village()
  farmDistrictRoads()
