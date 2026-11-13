@@ -31,35 +31,41 @@ local function makeFlower(parent: Instance, origin: Vector3, color: Color3)
 end
 
 local function fence(model: Model, center: Vector3, half: number)
- local railColor = Color3.fromRGB(155, 105, 66)
- -- Rear and side fences are continuous; the front has a real entrance gate.
+ local railColor = Color3.fromRGB(151, 105, 68)
+ local postColor = Color3.fromRGB(103, 70, 46)
+ local postHeight = 4.2
+ -- A two-rail timber fence reads clearly at player height and from the valley overview.
  for _, z in {-half, half} do
   local isFront = z == half
-  for x = -half, half, 14 do
+  for x = -half, half, 10 do
    if not (isFront and math.abs(x) < 14) then
-    part(model, "FencePost", Vector3.new(1, 3, 1), center + Vector3.new(x, 1.5, z), WOOD, Enum.Material.Wood)
+    part(model, "FencePost", Vector3.new(1.25, postHeight, 1.25), center + Vector3.new(x, postHeight / 2, z), postColor, Enum.Material.Wood)
    end
   end
-  if isFront then
-   for _, side in {-1, 1} do
-    part(model, "FenceRail", Vector3.new(half - 11, .45, .45), center + Vector3.new(side * (half + 11) / 2, 2.1, z), railColor, Enum.Material.Wood)
+  for _, railY in {1.25, 2.75} do
+   if isFront then
+    for _, side in {-1, 1} do
+     part(model, "FenceRail", Vector3.new(half - 13, .65, .65), center + Vector3.new(side * (half + 13) / 2, railY, z), railColor, Enum.Material.Wood)
+    end
+   else
+    part(model, "FenceRail", Vector3.new(half * 2, .65, .65), center + Vector3.new(0, railY, z), railColor, Enum.Material.Wood)
    end
-  else
-   part(model, "FenceRail", Vector3.new(half * 2, .45, .45), center + Vector3.new(0, 2.1, z), railColor, Enum.Material.Wood)
   end
  end
  for _, x in {-half, half} do
-  for z = -half, half, 14 do
+  for z = -half, half, 10 do
    if not (x == 0 and z == half) then
-    part(model, "FencePost", Vector3.new(1, 3, 1), center + Vector3.new(x, 1.5, z), WOOD, Enum.Material.Wood)
+    part(model, "FencePost", Vector3.new(1.25, postHeight, 1.25), center + Vector3.new(x, postHeight / 2, z), postColor, Enum.Material.Wood)
    end
   end
-  part(model, "FenceRail", Vector3.new(.45, .45, half * 2), center + Vector3.new(x, 2.1, 0), railColor, Enum.Material.Wood)
+  for _, railY in {1.25, 2.75} do
+   part(model, "FenceRail", Vector3.new(.65, .65, half * 2), center + Vector3.new(x, railY, 0), railColor, Enum.Material.Wood)
+  end
  end
  for _, x in {-11, 11} do
-  part(model, "GatePost", Vector3.new(1.5, 5, 1.5), center + Vector3.new(x, 2.5, half), Color3.fromRGB(91, 61, 39), Enum.Material.Wood)
+  part(model, "GatePost", Vector3.new(1.7, 5.2, 1.7), center + Vector3.new(x, 2.6, half), postColor, Enum.Material.Wood)
  end
- part(model, "GateTop", Vector3.new(22, .7, 1), center + Vector3.new(0, 4.6, half), Color3.fromRGB(139, 96, 59), Enum.Material.Wood)
+ part(model, "GateTop", Vector3.new(22, .8, 1.2), center + Vector3.new(0, 4.8, half), Color3.fromRGB(139, 96, 59), Enum.Material.Wood)
 end
 
 local function buildZone(model: Model, name: string, center: Vector3, offset: Vector3, size: Vector3, title: string)
