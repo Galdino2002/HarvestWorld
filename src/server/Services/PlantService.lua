@@ -7,6 +7,7 @@ local PlantService = {}
 local plantRequest: RemoteEvent
 local harvestRequest: RemoteEvent
 local inventory: {[Player]: {[string]: number}} = {}
+local lastAction: {[Player]: number} = {}
 
 local function getInventory(player: Player): {[string]: number}
     inventory[player] = inventory[player] or { Carrot = 5, Tomato = 2, Blueberry = 0 }
@@ -43,10 +44,17 @@ local function makeCropVisual(slotPart: BasePart, cropId: string, growSeconds: n
 end
 
 function PlantService.Init(remotes: Folder)
+    game:GetService("Players").PlayerRemoving:Connect(function(player)
+        inventory[player] = nil
+        lastAction[player] = nil
+    end)
     plantRequest = remotes:FindFirstChild("PlantRequest") :: RemoteEvent?
     harvestRequest = remotes:FindFirstChild("HarvestRequest") :: RemoteEvent?
 
     plantRequest.OnServerEvent:Connect(function(player, cropId, slotIndex)
+        local now = os.clock()
+        if now - (lastAction[player] or 0) < 0.25 then return end
+        lastAction[player] = now
         if typeof(cropId) ~= "string" or typeof(slotIndex) ~= "number" then return end
         local definition = Crops[cropId]
         if not definition or slotIndex % 1 ~= 0 then return end
@@ -65,6 +73,9 @@ function PlantService.Init(remotes: Folder)
     end)
 
     harvestRequest.OnServerEvent:Connect(function(player, slotIndex)
+        local now = os.clock()
+        if now - (lastAction[player] or 0) < 0.25 then return end
+        lastAction[player] = now
         if typeof(slotIndex) ~= "number" or slotIndex % 1 ~= 0 then return end
         local plot = FarmService.GetPlayerPlot(player)
         if not plot or plot:GetAttribute("OwnerUserId") ~= player.UserId then return end
