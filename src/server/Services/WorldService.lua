@@ -49,7 +49,7 @@ local function createHarvestTree(parent: Instance, position: Vector3, scale: num
  model:SetAttribute("ResourceType", "Wood")
  model.Parent = parent
  local trunkHeight = 13 * scale
- local trunk = makePart(model, "Trunk", Vector3.new(3.2, trunkHeight, 3.2) * scale, position + Vector3.new(0, trunkHeight / 2, 0), kind == "Pine" and Color3.fromRGB(91, 75, 59) or Color3.fromRGB(119, 81, 52), Enum.Material.Wood, Enum.PartType.Cylinder)
+ local trunk = makePart(model, "Trunk", Vector3.new(trunkHeight, 3.2, 3.2) * scale, position + Vector3.new(0, trunkHeight / 2, 0), kind == "Pine" and Color3.fromRGB(91, 75, 59) or Color3.fromRGB(119, 81, 52), Enum.Material.Wood, Enum.PartType.Cylinder)
  trunk.Orientation = Vector3.new(0, 0, 90)
  local leafColor = kind == "Pine" and Color3.fromRGB(48, 105, 82) or Color3.fromRGB(rng:NextInteger(65, 92), rng:NextInteger(125, 157), rng:NextInteger(65, 91))
  if kind == "Pine" then
