@@ -2,6 +2,7 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 
+local WorldService = require(script.Parent.Services.WorldService)
 local FarmService = require(script.Parent.Services.FarmService)
 local PlantService = require(script.Parent.Services.PlantService)
 local FarmAccessService = require(script.Parent.Services.FarmAccessService)
@@ -27,6 +28,7 @@ ensureRemote("PlantRequest")
 ensureRemote("HarvestRequest")
 ensureRemote("FarmAccessRequest")
 
+WorldService.Init()
 FarmService.Init()
 PlantService.Init(remotes)
 FarmAccessService.Init(remotes)
