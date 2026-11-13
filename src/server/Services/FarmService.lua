@@ -75,7 +75,7 @@ end
 
 
 local function farmhouse(model: Model, center: Vector3)
- center = center + Vector3.new(0, 0, -43)
+ center = center + Vector3.new(0, 0, -55)
  local wall = Color3.fromRGB(231, 211, 169)
  local roof = Color3.fromRGB(143, 74, 61)
  part(model, "FarmhouseFoundation", Vector3.new(42, 1.2, 34), center + Vector3.new(0, 1, -7), Color3.fromRGB(142, 132, 111), Enum.Material.Cobblestone)
@@ -84,13 +84,13 @@ local function farmhouse(model: Model, center: Vector3)
  leftRoof.CFrame *= CFrame.Angles(math.rad(-32), 0, 0)
  local rightRoof = part(model, "FarmhouseRoofRight", Vector3.new(42, 2, 19), center + Vector3.new(0, 17, 2), roof, Enum.Material.Slate)
  rightRoof.CFrame *= CFrame.Angles(math.rad(32), 0, 0)
- part(model, "FarmhouseDoor", Vector3.new(5, 9, .8), center + Vector3.new(0, 5.5, -21.5), WOOD, Enum.Material.Wood)
+ part(model, "FarmhouseDoor", Vector3.new(5, 9, .8), center + Vector3.new(0, 5.5, 7), WOOD, Enum.Material.Wood)
  for _, x in {-11, 11} do
-  part(model, "FarmhouseWindowFrame", Vector3.new(6, 5, .8), center + Vector3.new(x, 10, -21.5), WOOD, Enum.Material.Wood)
-  part(model, "FarmhouseWindow", Vector3.new(4.8, 3.8, .3), center + Vector3.new(x, 10, -22), Color3.fromRGB(145, 202, 214), Enum.Material.Glass)
+  part(model, "FarmhouseWindowFrame", Vector3.new(6, 5, .8), center + Vector3.new(x, 10, 7), WOOD, Enum.Material.Wood)
+  part(model, "FarmhouseWindow", Vector3.new(4.8, 3.8, .3), center + Vector3.new(x, 10, 6.5), Color3.fromRGB(145, 202, 214), Enum.Material.Glass)
  end
- part(model, "FarmhousePorch", Vector3.new(28, .7, 8), center + Vector3.new(0, 2, -25), Color3.fromRGB(155, 111, 71), Enum.Material.WoodPlanks)
- for _, x in {-12, 12} do part(model, "PorchSupport", Vector3.new(.8, 7, .8), center + Vector3.new(x, 5, -28), CREAM, Enum.Material.Wood) end
+ part(model, "FarmhousePorch", Vector3.new(28, .7, 8), center + Vector3.new(0, 2, 11), Color3.fromRGB(155, 111, 71), Enum.Material.WoodPlanks)
+ for _, x in {-12, 12} do part(model, "PorchSupport", Vector3.new(.8, 7, .8), center + Vector3.new(x, 5, 14), CREAM, Enum.Material.Wood) end
  part(model, "Chimney", Vector3.new(5, 11, 5), center + Vector3.new(13, 22, -4), Color3.fromRGB(151, 91, 72), Enum.Material.Brick)
  local mailbox = part(model, "Mailbox", Vector3.new(3, 2, 2), center + Vector3.new(15, 2, 20), Color3.fromRGB(70, 111, 153), Enum.Material.Metal)
  mailbox.CanCollide = false
@@ -127,7 +127,7 @@ local function createPlot(index: number): Model
  model.PrimaryPart = ground
  farmhouse(model, center)
  orchardAndYard(model, center)
- part(model, "FarmPath", Vector3.new(10, .15, 48), center + Vector3.new(0, .58, 65), Color3.fromRGB(177, 143, 99), Enum.Material.Ground)
+ part(model, "FarmPath", Vector3.new(12, .2, 132), center + Vector3.new(0, .58, 20), Color3.fromRGB(177, 143, 99), Enum.Material.Ground)
  part(model, "FrontStep", Vector3.new(15, .3, 5), center + Vector3.new(0, .72, 91), Color3.fromRGB(145, 112, 76), Enum.Material.WoodPlanks)
  fence(model, center, 91)
  local gatePrompt = Instance.new("ProximityPrompt")
@@ -141,14 +141,14 @@ local function createPlot(index: number): Model
  if gateTop and gateTop:IsA("BasePart") then gatePrompt.Parent = gateTop end
 
  -- Reserved build pads: players will later place their own coop, barn and pasture here.
- buildZone(model, "ChickenCoopBuildPad", center, Vector3.new(-53, 0, -45), Vector3.new(48, .35, 42), "Galinheiro")
- buildZone(model, "BarnBuildPad", center, Vector3.new(53, 0, -45), Vector3.new(54, .35, 48), "Celeiro")
- buildZone(model, "PastureBuildPad", center, Vector3.new(0, 0, 42), Vector3.new(92, .35, 48), "Pasto")
+ buildZone(model, "ChickenCoopBuildPad", center, Vector3.new(-48, 0, 0), Vector3.new(48, .35, 42), "Galinheiro")
+ buildZone(model, "BarnBuildPad", center, Vector3.new(48, 0, 0), Vector3.new(54, .35, 48), "Celeiro")
+ buildZone(model, "PastureBuildPad", center, Vector3.new(-48, 0, 58), Vector3.new(80, .35, 44), "Pasto")
  -- Nine starter crop beds remain close to the farm entrance.
  for i = 1, 9 do
   local rowSlot = math.floor((i - 1) / 3)
   local col = (i - 1) % 3
-  local bed = part(model, "GardenBed_" .. i, Vector3.new(10, .35, 10), center + Vector3.new(55 + col * 13, .72, 25 + rowSlot * 14), Color3.fromRGB(112, 75, 48), Enum.Material.Ground)
+  local bed = part(model, "GardenBed_" .. i, Vector3.new(11, .45, 11), center + Vector3.new(45 + col * 14, .72, -75 + rowSlot * 14), Color3.fromRGB(112, 75, 48), Enum.Material.Ground)
   bed:SetAttribute("PlantSlot", i)
  end
 
