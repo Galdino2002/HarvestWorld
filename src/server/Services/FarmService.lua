@@ -30,14 +30,35 @@ local function makeFlower(parent: Instance, origin: Vector3, color: Color3)
 end
 
 local function fence(model: Model, center: Vector3, half: number)
+ local railColor = Color3.fromRGB(155, 105, 66)
+ -- Rear and side fences are continuous; the front has a real entrance gate.
  for _, z in {-half, half} do
-  for x = -half, half, 14 do part(model, "FencePost", Vector3.new(1, 3, 1), center + Vector3.new(x, 1.5, z), WOOD, Enum.Material.Wood) end
-  part(model, "FenceRail", Vector3.new(half * 2, .45, .45), center + Vector3.new(0, 2.1, z), Color3.fromRGB(155, 105, 66), Enum.Material.Wood)
+  local isFront = z == half
+  for x = -half, half, 14 do
+   if not (isFront and math.abs(x) < 14) then
+    part(model, "FencePost", Vector3.new(1, 3, 1), center + Vector3.new(x, 1.5, z), WOOD, Enum.Material.Wood)
+   end
+  end
+  if isFront then
+   for _, side in {-1, 1} do
+    part(model, "FenceRail", Vector3.new(half - 14, .45, .45), center + Vector3.new(side * (half - 7) / 2, 2.1, z), railColor, Enum.Material.Wood)
+   end
+  else
+   part(model, "FenceRail", Vector3.new(half * 2, .45, .45), center + Vector3.new(0, 2.1, z), railColor, Enum.Material.Wood)
+  end
  end
  for _, x in {-half, half} do
-  for z = -half, half, 14 do part(model, "FencePost", Vector3.new(1, 3, 1), center + Vector3.new(x, 1.5, z), WOOD, Enum.Material.Wood) end
-  part(model, "FenceRail", Vector3.new(.45, .45, half * 2), center + Vector3.new(x, 2.1, 0), Color3.fromRGB(155, 105, 66), Enum.Material.Wood)
+  for z = -half, half, 14 do
+   if not (x == 0 and z == half) then
+    part(model, "FencePost", Vector3.new(1, 3, 1), center + Vector3.new(x, 1.5, z), WOOD, Enum.Material.Wood)
+   end
+  end
+  part(model, "FenceRail", Vector3.new(.45, .45, half * 2), center + Vector3.new(x, 2.1, 0), railColor, Enum.Material.Wood)
  end
+ for _, x in {-11, 11} do
+  part(model, "GatePost", Vector3.new(1.5, 5, 1.5), center + Vector3.new(x, 2.5, half), Color3.fromRGB(91, 61, 39), Enum.Material.Wood)
+ end
+ part(model, "GateTop", Vector3.new(22, .7, 1), center + Vector3.new(0, 4.6, half), Color3.fromRGB(139, 96, 59), Enum.Material.Wood)
 end
 
 local function buildZone(model: Model, name: string, center: Vector3, offset: Vector3, size: Vector3, title: string)
@@ -52,6 +73,49 @@ local function buildZone(model: Model, name: string, center: Vector3, offset: Ve
  label.TextStrokeTransparency = .35; label.TextScaled = true; label.Font = Enum.Font.GothamBold; label.Parent = gui
 end
 
+
+local function farmhouse(model: Model, center: Vector3)
+ local wall = Color3.fromRGB(231, 211, 169)
+ local roof = Color3.fromRGB(143, 74, 61)
+ part(model, "FarmhouseFoundation", Vector3.new(42, 1.2, 34), center + Vector3.new(0, 1, -7), Color3.fromRGB(142, 132, 111), Enum.Material.Cobblestone)
+ part(model, "FarmhouseWalls", Vector3.new(36, 15, 28), center + Vector3.new(0, 9, -7), wall, Enum.Material.WoodPlanks)
+ local leftRoof = part(model, "FarmhouseRoofLeft", Vector3.new(42, 2, 19), center + Vector3.new(0, 17, -16), roof, Enum.Material.Slate)
+ leftRoof.CFrame *= CFrame.Angles(math.rad(-32), 0, 0)
+ local rightRoof = part(model, "FarmhouseRoofRight", Vector3.new(42, 2, 19), center + Vector3.new(0, 17, 2), roof, Enum.Material.Slate)
+ rightRoof.CFrame *= CFrame.Angles(math.rad(32), 0, 0)
+ part(model, "FarmhouseDoor", Vector3.new(5, 9, .8), center + Vector3.new(0, 5.5, -21.5), WOOD, Enum.Material.Wood)
+ for _, x in {-11, 11} do
+  part(model, "FarmhouseWindowFrame", Vector3.new(6, 5, .8), center + Vector3.new(x, 10, -21.5), WOOD, Enum.Material.Wood)
+  part(model, "FarmhouseWindow", Vector3.new(4.8, 3.8, .3), center + Vector3.new(x, 10, -22), Color3.fromRGB(145, 202, 214), Enum.Material.Glass)
+ end
+ part(model, "FarmhousePorch", Vector3.new(28, .7, 8), center + Vector3.new(0, 2, -25), Color3.fromRGB(155, 111, 71), Enum.Material.WoodPlanks)
+ for _, x in {-12, 12} do part(model, "PorchSupport", Vector3.new(.8, 7, .8), center + Vector3.new(x, 5, -28), CREAM, Enum.Material.Wood) end
+ part(model, "Chimney", Vector3.new(5, 11, 5), center + Vector3.new(13, 22, -4), Color3.fromRGB(151, 91, 72), Enum.Material.Brick)
+ local mailbox = part(model, "Mailbox", Vector3.new(3, 2, 2), center + Vector3.new(15, 2, 20), Color3.fromRGB(70, 111, 153), Enum.Material.Metal)
+ mailbox.CanCollide = false
+ part(model, "MailboxPost", Vector3.new(.6, 3, .6), center + Vector3.new(15, 1.5, 20), WOOD, Enum.Material.Wood)
+end
+
+local function orchardAndYard(model: Model, center: Vector3)
+ for i, offset in {{-76, -8}, {-76, 18}, {76, -8}, {76, 18}} do
+  makeTree(model, center + Vector3.new(offset[1], 0, offset[2]), .85 + (i % 2) * .12)
+ end
+ -- A small water trough and hay bales make the yard feel used, not like an empty template.
+ local trough = part(model, "WaterTrough", Vector3.new(12, 2, 4), center + Vector3.new(-24, 1, 24), Color3.fromRGB(113, 143, 151), Enum.Material.Metal)
+ trough.CanCollide = true
+ for _, offset in {Vector3.new(25, 1.5, 20), Vector3.new(31, 1.5, 24)} do
+  local hay = part(model, "HayBale", Vector3.new(5, 3, 4), center + offset, Color3.fromRGB(207, 174, 91), Enum.Material.Grass)
+  hay.Shape = Enum.PartType.Cylinder
+  hay.Orientation = Vector3.new(0, 0, 90)
+ end
+ for _, x in {-78, 78} do
+  local post = part(model, "YardLamp", Vector3.new(.7, 7, .7), center + Vector3.new(x, 3.5, 65), WOOD, Enum.Material.Wood)
+  local bulb = part(model, "YardLantern", Vector3.new(1.5, 1.5, 1.5), post.Position + Vector3.new(0, 3.7, 0), Color3.fromRGB(255, 222, 151), Enum.Material.Glass)
+  bulb.Shape = Enum.PartType.Ball
+  local light = Instance.new("PointLight"); light.Brightness = .55; light.Range = 12; light.Parent = bulb
+ end
+end
+
 local function createPlot(index: number): Model
  local model = Instance.new("Model")
  model.Name = "FarmPlot_" .. index
@@ -60,6 +124,8 @@ local function createPlot(index: number): Model
  local center = Vector3.new((column - 1.5) * 235, 0, 280 + row * 245)
  local ground = part(model, "Ground", Vector3.new(190, 1, 190), center, GRASS, Enum.Material.Grass)
  model.PrimaryPart = ground
+ farmhouse(model, center)
+ orchardAndYard(model, center)
  part(model, "FarmPath", Vector3.new(10, .15, 48), center + Vector3.new(0, .58, 65), Color3.fromRGB(177, 143, 99), Enum.Material.Ground)
  part(model, "FrontStep", Vector3.new(15, .3, 5), center + Vector3.new(0, .72, 91), Color3.fromRGB(145, 112, 76), Enum.Material.WoodPlanks)
  fence(model, center, 91)
@@ -79,11 +145,11 @@ local function createPlot(index: number): Model
  local sign = part(model, "OwnerSign", Vector3.new(12, 4, .7), center + Vector3.new(0, 5, -84), CREAM, Enum.Material.WoodPlanks)
  sign.CanCollide = false
  local gui = Instance.new("BillboardGui")
- gui.Name = "SignText"; gui.Size = UDim2.fromOffset(170, 40); gui.StudsOffset = Vector3.new(0, 2.5, 0)
- gui.MaxDistance = 110; gui.Parent = sign
+ gui.Name = "SignText"; gui.Size = UDim2.fromOffset(132, 30); gui.StudsOffset = Vector3.new(0, 2.5, 0)
+ gui.MaxDistance = 72; gui.Parent = sign
  local label = Instance.new("TextLabel")
  label.Name = "OwnerName"; label.Size = UDim2.fromScale(1, 1); label.BackgroundTransparency = 1
- label.Text = "Fazenda livre"; label.TextColor3 = Color3.fromRGB(75, 55, 35)
+ label.Text = "FAZENDA DISPONÍVEL"; label.TextColor3 = Color3.fromRGB(75, 55, 35)
  label.TextStrokeTransparency = .55; label.TextScaled = true; label.Font = Enum.Font.GothamBold; label.Parent = gui
  model:SetAttribute("OwnerUserId", 0)
  model:SetAttribute("OwnerName", "Disponível")
