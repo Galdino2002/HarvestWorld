@@ -41,7 +41,7 @@ local function fence(model: Model, center: Vector3, half: number)
   end
   if isFront then
    for _, side in {-1, 1} do
-    part(model, "FenceRail", Vector3.new(half - 14, .45, .45), center + Vector3.new(side * (half - 7) / 2, 2.1, z), railColor, Enum.Material.Wood)
+    part(model, "FenceRail", Vector3.new(half - 11, .45, .45), center + Vector3.new(side * (half + 11) / 2, 2.1, z), railColor, Enum.Material.Wood)
    end
   else
    part(model, "FenceRail", Vector3.new(half * 2, .45, .45), center + Vector3.new(0, 2.1, z), railColor, Enum.Material.Wood)
@@ -151,6 +151,14 @@ local function createPlot(index: number): Model
  label.Name = "OwnerName"; label.Size = UDim2.fromScale(1, 1); label.BackgroundTransparency = 1
  label.Text = "FAZENDA DISPONÍVEL"; label.TextColor3 = Color3.fromRGB(75, 55, 35)
  label.TextStrokeTransparency = .55; label.TextScaled = true; label.Font = Enum.Font.GothamBold; label.Parent = gui
+ local visitPrompt = Instance.new("ProximityPrompt")
+ visitPrompt.Name = "VisitFarmPrompt"
+ visitPrompt.ActionText = "Visitar fazenda"
+ visitPrompt.ObjectText = "Conhecer esta fazenda"
+ visitPrompt.HoldDuration = .5
+ visitPrompt.MaxActivationDistance = 12
+ visitPrompt.RequiresLineOfSight = false
+ visitPrompt.Parent = sign
  model:SetAttribute("OwnerUserId", 0)
  model:SetAttribute("OwnerName", "Disponível")
  model:SetAttribute("AccessMode", "Friends")
