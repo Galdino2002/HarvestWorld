@@ -8,6 +8,7 @@ local PlantService = require(script.Parent.Services.PlantService)
 local FarmAccessService = require(script.Parent.Services.FarmAccessService)
 local FarmBuildingService = require(script.Parent.Services.FarmBuildingService)
 local WorldLifeService = require(script.Parent.Services.WorldLifeService)
+local GreenfieldsExploreService = require(script.Parent.Services.GreenfieldsExploreService)
 
 local remotes = ReplicatedStorage:FindFirstChild("Remotes") :: Folder?
 if not remotes then
@@ -31,6 +32,7 @@ ensureRemote("HarvestRequest")
 ensureRemote("FarmAccessRequest")
 
 WorldService.Init()
+GreenfieldsExploreService.Init()
 FarmService.Init()
 WorldLifeService.Init()
 FarmBuildingService.Init()
@@ -57,6 +59,11 @@ local function setupPlayer(player: Player)
     stone.Name = "Stone"
     stone.Value = 0
     stone.Parent = stats
+
+    local discoveries = Instance.new("IntValue")
+    discoveries.Name = "Discoveries"
+    discoveries.Value = 0
+    discoveries.Parent = stats
 
     FarmService.Assign(player)
 end
