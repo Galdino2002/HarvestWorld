@@ -51,6 +51,9 @@ Use one authoritative schedule, idempotent season finalization, duplicate submis
 
 
 ## Greenfields world generation
+- The map target is 3.6 km x 3.6 km, with a village, river, lake, several forest clusters, a rocky highland, and meadow details.
+- Forest trees use server-side ProximityPrompts and award Wood after three valid chops; stone deposits award Stone and respawn after a cooldown. These prototype resources are leaderstats only until PlayerDataService is implemented.
+- Farm plots are enlarged and reserve build pads for a coop, barn, and pasture. Pads are not yet a building or animal system.
 - WorldService generates the first region: grassland, forest borders, Harvest River, wooden bridge, village square, and starter buildings.
 - FarmService places individual plots south of the river in a spaced layout.
 - This is a server-generated blockout. Final terrain sculpting, detailed assets, sound, water effects, and performance QA remain future art tasks.
