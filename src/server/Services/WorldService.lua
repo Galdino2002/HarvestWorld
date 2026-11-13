@@ -364,6 +364,33 @@ local function lighting()
  atmosphere.Glare = .18
  atmosphere.Haze = 1.4
  atmosphere.Parent = Lighting
+
+ local bloom = Lighting:FindFirstChild("HarvestBloom") or Instance.new("BloomEffect")
+ bloom.Name = "HarvestBloom"
+ bloom.Intensity = .16
+ bloom.Size = 22
+ bloom.Threshold = 1.15
+ bloom.Parent = Lighting
+
+ local color = Lighting:FindFirstChild("HarvestColor") or Instance.new("ColorCorrectionEffect")
+ color.Name = "HarvestColor"
+ color.Brightness = .025
+ color.Contrast = .08
+ color.Saturation = .12
+ color.TintColor = Color3.fromRGB(255, 247, 226)
+ color.Parent = Lighting
+
+ local rays = Lighting:FindFirstChild("HarvestSunRays") or Instance.new("SunRaysEffect")
+ rays.Name = "HarvestSunRays"
+ rays.Intensity = .055
+ rays.Spread = .72
+ rays.Parent = Lighting
+
+ local clouds = Terrain:FindFirstChildOfClass("Clouds") or Instance.new("Clouds")
+ clouds.Cover = .28
+ clouds.Density = .34
+ clouds.Color = Color3.fromRGB(235, 240, 226)
+ clouds.Parent = Terrain
 end
 
 function WorldService.Init()
