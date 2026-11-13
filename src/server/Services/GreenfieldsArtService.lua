@@ -58,7 +58,7 @@ local function sign(parent: Instance, name: string, position: Vector3, title: st
     local label = Instance.new("TextLabel")
     label.Size = UDim2.fromScale(1, 1)
     label.BackgroundTransparency = 1
-    label.Text = title .. "\\n" .. subtitle
+    label.Text = title .. "\n" .. subtitle
     label.TextColor3 = Color3.fromRGB(255, 244, 218)
     label.TextScaled = true
     label.Font = Enum.Font.GothamBold
