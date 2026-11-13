@@ -16,6 +16,7 @@ Harvest World is a cozy, social farming and life-simulation game. Players own se
 - Added server-side distance checks for planting and harvesting.
 - Added a short server-side request throttle and cleanup of temporary crop inventory when a player leaves.
 - Added a responsive scale to the HUD, a blueberry planting action, and live Wood/Stone counters.
+- Disabled Roblox terrain grass decoration to prevent oversized grass blades popping out at camera distance; switched the world floor and farm plots to the lower-profile LeafyGrass material for consistent close/far appearance.
 - Made player setup idempotent to avoid creating duplicate leaderstats if a player is initialized twice.
 
 ## Current playable prototype
