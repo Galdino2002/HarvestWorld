@@ -43,6 +43,16 @@ local function setupPlayer(player: Player)
     coins.Value = 100
     coins.Parent = stats
 
+    local wood = Instance.new("IntValue")
+    wood.Name = "Wood"
+    wood.Value = 0
+    wood.Parent = stats
+
+    local stone = Instance.new("IntValue")
+    stone.Name = "Stone"
+    stone.Value = 0
+    stone.Parent = stats
+
     FarmService.Assign(player)
 end
 
