@@ -16,8 +16,9 @@ local function part(parent: Instance, name: string, size: Vector3, position: Vec
 end
 
 local function makeTree(parent: Instance, origin: Vector3, scale: number)
- local trunk = part(parent, "TreeTrunk", Vector3.new(1.4, 5, 1.4) * scale, origin + Vector3.new(0, 2.5, 0), WOOD, Enum.Material.Wood)
+ local trunk = part(parent, "TreeTrunk", Vector3.new(5, 1.4, 1.4) * scale, origin + Vector3.new(0, 2.5, 0), WOOD, Enum.Material.Wood)
  trunk.Shape = Enum.PartType.Cylinder
+ trunk.Orientation = Vector3.new(0, 0, 90)
  local leaves = part(parent, "TreeCanopy", Vector3.new(6, 6, 6) * scale, origin + Vector3.new(0, 6, 0), Color3.fromRGB(75, 145, 72), Enum.Material.Grass)
  leaves.Shape = Enum.PartType.Ball
 end
