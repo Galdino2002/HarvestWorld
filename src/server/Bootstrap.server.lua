@@ -2,8 +2,8 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 
-local FarmService = require(script.Services.FarmService)
-local PlantService = require(script.Services.PlantService)
+local FarmService = require(script.Parent.Services.FarmService)
+local PlantService = require(script.Parent.Services.PlantService)
 
 local remotes = ReplicatedStorage:FindFirstChild("Remotes") :: Folder?
 if not remotes then
