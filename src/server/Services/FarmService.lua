@@ -116,7 +116,7 @@ local function farmhouse(model: Model, center: Vector3, plotIndex: number)
  end
  part(model, "FarmhousePorch", Vector3.new(28, .7, 8), center + Vector3.new(0, 2, 11), Color3.fromRGB(155, 111, 71), Enum.Material.WoodPlanks)
  part(model, "PorchAwning", Vector3.new(32, .8, 7), center + Vector3.new(0, 13.4, 12), style.roof, Enum.Material.WoodPlanks)
- for _, x in {-12, 12} do part(model, "PorchSupport", Vector3.new(.8, 7, .8), center + Vector3.new(x, 5, 14), CREAM, Enum.Material.Wood) end
+ for _, x in {-12, 12} do part(model, "PorchSupport", Vector3.new(.8, 12, .8), center + Vector3.new(x, 8, 14), CREAM, Enum.Material.Wood) end
  part(model, "Chimney", Vector3.new(5, 11, 5), center + Vector3.new(13, 22, -4), Color3.fromRGB(151, 91, 72), Enum.Material.Brick)
  part(model, "ChimneyCap", Vector3.new(6.5, 1, 6.5), center + Vector3.new(13, 27.5, -4), Color3.fromRGB(103, 76, 65), Enum.Material.Brick)
  local mailboxColor = ({Color3.fromRGB(70, 111, 153), Color3.fromRGB(167, 82, 68), Color3.fromRGB(81, 126, 79), Color3.fromRGB(190, 151, 73)})[((plotIndex - 1) % 4) + 1]
@@ -170,8 +170,7 @@ local function createPlot(index: number): Model
  farmhouse(model, center, index)
  orchardAndYard(model, center)
  -- A distinct front-yard garden gives every property a little identity without occupying build pads.
- local gardenSide = index % 2 == 0 and 1 or -1
- local gardenCenter = center + Vector3.new(gardenSide * 57, 0, 60)
+ local gardenCenter = center + Vector3.new(-52, 0, 68)
  local gardenBase = part(model, "FrontGardenBed", Vector3.new(25, .6, 13), gardenCenter + Vector3.new(0, .3, 0), Color3.fromRGB(99, 125, 72), Enum.Material.Ground)
  gardenBase.CanCollide = false
  for flowerIndex = 1, 7 do
