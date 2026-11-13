@@ -110,7 +110,7 @@ local function orchardAndYard(model: Model, center: Vector3)
   hay.Orientation = Vector3.new(0, 0, 90)
  end
  for _, x in {-78, 78} do
-  local post = part(model, "YardLamp", Vector3.new(.7, 7, .7), center + Vector3.new(x, 3.5, 65), WOOD, Enum.Material.Wood)
+  local post = part(model, "YardLamp", Vector3.new(.7, 7, .7), center + Vector3.new(x, 3.5, -12), WOOD, Enum.Material.Wood)
   local bulb = part(model, "YardLantern", Vector3.new(1.5, 1.5, 1.5), post.Position + Vector3.new(0, 3.7, 0), Color3.fromRGB(255, 222, 151), Enum.Material.Glass)
   bulb.Shape = Enum.PartType.Ball
   local light = Instance.new("PointLight"); light.Brightness = .55; light.Range = 12; light.Parent = bulb
@@ -143,7 +143,7 @@ local function createPlot(index: number): Model
  -- Reserved build pads: players will later place their own coop, barn and pasture here.
  buildZone(model, "ChickenCoopBuildPad", center, Vector3.new(-48, 0, 0), Vector3.new(48, .35, 42), "Galinheiro")
  buildZone(model, "BarnBuildPad", center, Vector3.new(48, 0, 0), Vector3.new(54, .35, 48), "Celeiro")
- buildZone(model, "PastureBuildPad", center, Vector3.new(-48, 0, 58), Vector3.new(80, .35, 44), "Pasto")
+ buildZone(model, "PastureBuildPad", center, Vector3.new(50, 0, 58), Vector3.new(80, .35, 44), "Pasto")
  -- Nine starter crop beds remain close to the farm entrance.
  for i = 1, 9 do
   local rowSlot = math.floor((i - 1) / 3)
